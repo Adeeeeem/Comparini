@@ -1,5 +1,30 @@
+/* Get Raleway Font */
+@import "../fonts/barlow.css";
+/*==================================================
+				Variables
+==================================================*/
+:root
+{
+	--primary-color: #046DB5;
+	--secondary-color: #00A8DE;
+	--body-color: #F8F8F8;
+	--text-color: #333333;
+	--input-color: #FFFFFF;
+}
+/*==================================================
+				HTML & Body
+==================================================*/
+*{margin: 0; padding: 0;}
+html, body{height: 100%; width: 100%; font-family: "Barlow", sans serif !important; color: var(--text-color) !important; font-weight: bold; overflow-x: hidden; background-color: var(--body-color);}
+label{font-weight: bold;}
+input, select{height: 40px !important; padding: auto 0; border-radius: 0.25rem !important;}
+table th, table td{text-align: center !important; vertical-align: middle !important;}
 /*==================================================
 				Preloader
 ==================================================*/
 #preloader{background-color: #FFFFFF; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9999;}
 #status{background-image: url("../img/preloader.gif"); background-repeat: no-repeat; width: 200px; height: 200px; position: absolute; left: 50%; top: 50%; margin-top: -100px; margin-left: -100px;}
+/*==================================================
+				Navbar
+==================================================*/
+#nav{padding: 0 30px 0 30px; background-color: #FFFFFF;}
