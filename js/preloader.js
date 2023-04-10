@@ -43,11 +43,12 @@ function Translate()
 		this.language = language;	
 	}
 	// Translate 
-	this.process = function(){
+	this.process = function()
+	{
 		_self = this;
 		var xrhFile = new XMLHttpRequest();
 		// Load content data 
-		xrhFile.open("GET", "languages/" + this.language + ".json", false);
+		xrhFile.open("GET", "/Comparini/languages/" + this.language + ".json", false);
 		xrhFile.onreadystatechange = function ()
 		{
 			if(xrhFile.readyState === 4)
@@ -58,11 +59,11 @@ function Translate()
 					var allDom = document.getElementsByTagName("*");
 					for(var i = 0; i < allDom.length; i++)
 					{
-						var elem = allDom[i];
-						var key = elem.getAttribute(_self.attribute);
+						var element = allDom[i];
+						var key = element.getAttribute(_self.attribute);
 						if(key != null)
 						{
-							elem.innerHTML = LanguageObject[key];
+							element.innerHTML = LanguageObject[key];
 						}
 					}
 				}
