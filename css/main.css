@@ -8,6 +8,8 @@
 	--primary-color: #046DB5;
 	--secondary-color: #00A8DE;
 	--body-color: #F8F8F8;
+	--nav-color: #FFFFFF;
+	--nav-text-color: #999999;
 	--text-color: #333333;
 	--input-color: #FFFFFF;
 }
@@ -27,4 +29,5 @@ table th, table td{text-align: center !important; vertical-align: middle !import
 /*==================================================
 				Navbar
 ==================================================*/
-#nav{padding: 0 30px 0 30px; background-color: #FFFFFF;}
+nav#nav{padding: 0 30px 0 30px; background-color: var(--nav-color) !important;}
+nav#nav .uk-navbar-nav > li > a{color: var(--nav-text-color) !important;}
