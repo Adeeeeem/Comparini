@@ -1,9 +1,10 @@
 <?php
 	/* Generate Web Json Token */
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/libs/php-jwt-master/src/BeforeValidException.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/libs/php-jwt-master/src/ExpiredException.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/libs/php-jwt-master/src/SignatureInvalidException.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/libs/php-jwt-master/src/JWT.php");
+	include_once "jwt/src/BeforeValidException.php";
+	include_once "jwt/src/ExpiredException.php";
+	include_once "jwt/src/SignatureInvalidException.php";
+	include_once "jwt/src/JWT.php";
+
 	use \Firebase\JWT\JWT;
 
 	class Admin

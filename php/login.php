@@ -7,12 +7,12 @@
 	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 	/* Database & JWT Configuraitons */
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/configuration/database.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/configuration/core.php");
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/configuration/security.php");
+	require_once "configuration/database.php";
+	require_once "configuration/core.php";
+	require_once "configuration/security.php";
 
 	/* Include the Admin Class */
-	include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/php/entities/Admin.php");
+	require_once "entities/Admin.php";
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST")
 	{
