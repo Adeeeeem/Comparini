@@ -61,12 +61,16 @@
 								exit;
 							break;
 						default:
+								/* Start Session */
+								session_start();
+								/* Save Admin Object */
+								$_SESSION["admin"] = serialize($admin);
+								/* Save Token */
+								$_SESSION["token"] = $token;
 								/* Encode to Json Format */
 								$response = array("success" => true, "message" => $token);
 								/* Return as Json Format */
 								echo json_encode($response);
-								/* Save Token */
-								$_SESSION["token"] = $token;
 								/* Redirect to Dashboard */
 								//header("Location: ../admin/index.html");
 								exit;

@@ -55,14 +55,18 @@
 					$this->email = $value;
 					break;
 				default:
-					echo $attribute . "Not Found !";
+					throw new Exception($attribute . "Not Found !");
 			}
+		}
+
+		// mark the PDO object as transient
+		public function __sleep()
+		{
+			return array("id", "username", "firstName", "lastName");
 		}
 
 		public function login($username, $password)
 		{
-			/* Start Session */
-			session_start();
 			// Prepare the SQL statement to fetch the admin by username and password
 			$request = "SELECT * FROM {$this->table} WHERE LOWER(username) = LOWER(:username) LIMIT 0, 1;";
 			// Preparing Statement
