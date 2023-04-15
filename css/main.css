@@ -33,17 +33,17 @@ div.uk-modal-dialog, div.uk-modal-body{background-color:  var(--body-color); bor
 div.uk-modal-dialog .uk-modal-title{font-size: 1.7rem; color: var(--text-color);}
 div.uk-modal-header{background-color: var(--primary-color); padding-top: 10px; padding-bottom: 10px;}
 div.uk-modal-footer{background-color: var(--primary-color); height: 45px !important; padding: 0;}
-button.uk-modal-close-default{background-color: transparent; font-size: 70px; color: var(--orange-color); font-weight: 400; cursor: pointer; margin-top: -10px;}
-button.uk-modal-close-default:hover, button.uk-modal-close-default:focus{color: var(--blue-color);}
+button.uk-modal-close-default{background-color: transparent; font-size: 70px; color: var(--primary-color); font-weight: 400; cursor: pointer; margin-top: -10px;}
+button.uk-modal-close-default:hover, button.uk-modal-close-default:focus{color: var(--secondary-color);}
 .uk-modal-footer button{text-transform: uppercase; background-color: var(--primary-color); height: 45px !important;}
 .uk-modal-footer button:hover, .uk-modal-footer button:focus{background-color: var(--secondary-color);}
 label.uk-form-label{font-size: 12px; letter-spacing: 1px; color: var(--text-color) !important;}
 .uk-accordion-title::before{display: none;}
 input.uk-input, select.uk-input, input.uk-input:focus, select.uk-input:focus{border: 1px solid var(--secondary-color); background-color: var(--input-color);}
-input.uk-checkbox{width: 15px; height: 15px !important; background-color: var(--device-color);}
-input.uk-checkbox:checked:focus, input.uk-checkbox:checked{background-color: var(--orange-color);}
+input.uk-checkbox{width: 15px; height: 15px !important;}
+input.uk-checkbox:checked:focus, input.uk-checkbox:checked{background-color: var(--primary-color);}
 .uk-table-hover tbody tr:hover,.uk-table-hover>tr:hover{background-color: var(--primary-color);}
-div.uk-tooltip-inner span{color: var(--orange-color);}
+div.uk-tooltip-inner span{color: var(--primary-color);}
 .uk-list ul{padding-left: 50px;}
 .uk-hr, hr{border-top: none;}
 /*==================================================
@@ -51,6 +51,14 @@ div.uk-tooltip-inner span{color: var(--orange-color);}
 ==================================================*/
 #preloader{background-color: #FFFFFF; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 9999;}
 #status{background-image: url("../img/preloader.gif"); background-repeat: no-repeat; width: 200px; height: 200px; position: absolute; left: 50%; top: 50%; margin-top: -100px; margin-left: -100px;}
+/*==================================================
+				Custom Elements
+==================================================*/
+small.error{color: #F32013; font-size: 10px; letter-spacing: 1px; font-weight: 600;}
+/*==================================================
+				Hidden Elements
+==================================================*/
+small.error{display: none;}
 /*==================================================
 				Navbar
 ==================================================*/
