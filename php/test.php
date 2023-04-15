@@ -1,5 +1,5 @@
 <?php
-	if (basename($_SERVER['SCRIPT_FILENAME']) == basename(__FILE__))
+	if (basename($_SERVER["SCRIPT_FILENAME"]) == basename(__FILE__))
 	{
 		// This file is being accessed directly, so redirect to the home page or another page
 		include("../404.html");

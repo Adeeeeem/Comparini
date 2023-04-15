@@ -1,3 +1,29 @@
+/* Check if the Admin is already connected */
+$(function()
+{
+	$.ajax
+	({
+		url: "../php/check_session.php",
+		type: "POST",
+		dataType: "json",
+		contentType: "application/json",
+		data: {},
+		success: function(response)
+		{
+			console.log(response);
+
+			if (response.success)
+			{
+				window.location.href = response.redirect;
+			}
+		},
+		error: function(xhr, textStatus, errorThrown)
+		{
+			$.growl.error({ message: "Our hamsters are working hard to fix the issue. Please bear with us and try again soon." });
+			console.log(xhr.responseText);
+		}
+	});
+});
 /* When Clicking on Login Button */
 $(function()
 {
@@ -29,7 +55,7 @@ $(function()
 
 					if (response.success)
 					{
-						window.location.href = "index.html";
+						window.location.href = response.redirect;
 					}
 					else
 					{

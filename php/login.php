@@ -14,85 +14,96 @@
 	/* Include the Admin Class */
 	require_once "entities/Admin.php";
 
-	if ($_SERVER["REQUEST_METHOD"] == "POST")
+	/* This is an AJAX request */
+	if (!empty($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest")
 	{
-		/* Retrieve DATA from the HTML form */
-		$dataJSON = file_get_contents("php://input");
-		$data = array();
-		parse_str($dataJSON, $data);
-
-		if ( isset($data) && !empty($data) )
+		if ($_SERVER["REQUEST_METHOD"] == "POST")
 		{
-			/* If Username is not Empty */
-			if ( isset($data["username"]) && !empty($data["username"]) )
+			/* Retrieve DATA from the HTML form */
+			$dataJSON = file_get_contents("php://input");
+			$data = array();
+			parse_str($dataJSON, $data);
+
+			if ( isset($data) && !empty($data) )
 			{
-				/* If Password is not Empty */
-				if ( isset($data["password"]) && !empty($data["password"]) )
+				/* If Username is not Empty */
+				if ( isset($data["username"]) && !empty($data["username"]) )
 				{
-					/* Sanitize input data */
-					$data = array_map("Security", $data);
-
-					/* Get BD connection */
-					$database = new Database();
-					$connection = $database->getConnection();
-					/* Get Admin Class */
-					$admin = new Admin($connection);
-
-					$username = Security($data["username"]);
-					$password = Security($data["password"]);
-
-					/* Generate the token is case if success */
-					$token = $admin->login($username, $password);
-					
-					switch ($token)
+					/* If Password is not Empty */
+					if ( isset($data["password"]) && !empty($data["password"]) )
 					{
-						case "USERNAME_NOT_FOUND":
-								/* Encode to Json Format */
-								$response = array("success" => false, "message" => "USERNAME_NOT_FOUND");
-								/* Return as Json Format */
-								echo json_encode($response);
-								exit;
-							break;
-						case "WRONG_PASSWORD":
-								/* Encode to Json Format */
-								$response = array("success" => false, "message" => "WRONG_PASSWORD");
-								/* Return as Json Format */
-								echo json_encode($response);
-								exit;
-							break;
-						default:
-								/* Start Session */
-								session_start();
-								/* Save Admin Object */
-								$_SESSION["admin"] = serialize($admin);
-								/* Save Token */
-								$_SESSION["token"] = $token;
-								/* Encode to Json Format */
-								$response = array("success" => true, "message" => $token);
-								/* Return as Json Format */
-								echo json_encode($response);
-								/* Redirect to Dashboard */
-								//header("Location: ../admin/index.html");
-								exit;
-							break;
+						/* Sanitize input data */
+						$data = array_map("Security", $data);
+
+						/* Get BD connection */
+						$database = new Database();
+						$connection = $database->getConnection();
+						/* Get Admin Class */
+						$admin = new Admin($connection);
+
+						$username = Security($data["username"]);
+						$password = Security($data["password"]);
+
+						/* Generate the token is case if success */
+						$token = $admin->login($username, $password);
+						
+						switch ($token)
+						{
+							case "USERNAME_NOT_FOUND":
+									/* Encode to Json Format */
+									$response = array("success" => false, "message" => "USERNAME_NOT_FOUND");
+									/* Return as Json Format */
+									echo json_encode($response);
+									exit;
+								break;
+							case "WRONG_PASSWORD":
+									/* Encode to Json Format */
+									$response = array("success" => false, "message" => "WRONG_PASSWORD");
+									/* Return as Json Format */
+									echo json_encode($response);
+									exit;
+								break;
+							default:
+									/* Start Session */
+									session_start();
+									/* Save Admin Object */
+									$_SESSION["admin"] = serialize($admin);
+									/* Save Token */
+									$_SESSION["token"] = $token;
+									/* Encode to Json Format */
+									$response = array("success" => true, "redirect" => "index.html", "message" => $token);
+									/* Return as Json Format */
+									echo json_encode($response);
+									/* Redirect to Dashboard */
+									//header("Location: ../admin/index.html");
+									exit;
+								break;
+						}
+
+						/* Close Connection */
+						$database->closeConnection();
 					}
 
-					/* Close Connection */
-					$database->closeConnection();
+					/* Encode to Json Format */
+					$response = array("success" => false, "message" => "EMPTY_PASSWORD");
+					/* Return as Json Format */
+					echo json_encode($response);
+					exit;
 				}
-
-				/* Encode to Json Format */
-				$response = array("success" => false, "message" => "EMPTY_PASSWORD");
-				/* Return as Json Format */
-				echo json_encode($response);
-				exit;
 			}
-		}
 
-		/* Encode to Json Format */
-		$response = array("success" => false, "message" => "EMPTY_DATA");
-		/* Return as Json Format */
-		echo json_encode($response);
-		exit;
+			/* Encode to Json Format */
+			$response = array("success" => false, "message" => "EMPTY_DATA");
+			/* Return as Json Format */
+			echo json_encode($response);
+			exit;
+		}
+	}
+	/* This file is being accessed directly */
+	else
+	{
+		// This file is being accessed directly, so redirect to the home page or another page
+		include("../404.html");
+		exit();
 	}
 ?>
