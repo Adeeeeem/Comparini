@@ -11,29 +11,64 @@ $(function()
 		CheckInput($("#username"), $("#empty-username-error"));
 		CheckInput($("#password"), $("#empty-password-error"));
 
-		$.ajax
-		({
-			url: "../php/login.php",
-			type: "POST",
-			dataType: "json",
-			contentType: "application/json",
-			data: {username: username, password: password},
-			success: function(response)
-			{
-				if (response.success)
+		if (typeof username !== "undefined" && username !== "" && typeof password !== "undefined" && password !== "")
+		{
+			// Hide the errors
+			ResetLoginForm();
+
+			$.ajax
+			({
+				url: "../php/login.php",
+				type: "POST",
+				dataType: "json",
+				contentType: "application/json",
+				data: {username: username, password: password},
+				success: function(response)
 				{
-					console.log(response.token);
-				}
-				else
+					console.log(response);
+
+					if (response.success)
+					{
+						window.location.href = "index.html";
+					}
+					else
+					{
+						switch(response.message)
+						{
+							case "EMPTY_DATA":
+									CheckInput($("#username"), $("#empty-username-error"));
+									CheckInput($("#password"), $("#empty-password-error"));
+									$.growl.error({ message: "Whoops! Looks like you forgot to fill in some important details. Don't worry, we won't tell anyone." });
+								break;
+							case "USERNAME_NOT_FOUND":
+									$("#username").css("border-color",  "var(--error-color)");
+									$("#password").css("border-color",  "var(--error-color)");
+									$("#wrong-username-error").show();
+									$.growl.error({ message: "Oops, looks like you misspelled your username! Try again or create a new account." });
+								break;
+							case "WRONG_PASSWORD":
+									$("#password").css("border-color",  "var(--error-color)");
+									$("#wrong-password-error").show();
+									$.growl.error({ message: "Oops, it looks like the password you entered is a secret we can't keep." });
+								break;
+						}
+					}
+				},
+				error: function(xhr, textStatus, errorThrown)
 				{
-					console.log("Login failed");
+					$.growl.error({ message: "Our hamsters are working hard to fix the issue. Please bear with us and try again soon." });
+					$("#username").css("border-color",  "var(--error-color)");
+					$("#password").css("border-color",  "var(--error-color)");
+					console.log(xhr.responseText);
 				}
-			},
-			error: function(xhr, textStatus, errorThrown)
-			{
-				console.log(xhr.responseText);
-			}
-		});
+			});
+		}
+		else
+		{
+			$.growl.error({ message: "Whoops! Looks like you forgot to fill in some important details. Don't worry, we won't tell anyone." });
+		}
+
+
 		/*.done(function(response)
 		{
 			switch (response.result)
@@ -89,22 +124,19 @@ function CheckInput(input, error)
 {
 	if (!input.val())
 	{
-		input.css("border", "1px solid #F32013");
+		input.css("border-color",  "var(--error-color)");
 		error.show();
 	}
 	else
 	{
-		input.css("border", "1px solid var(--secondary-color)");
+		input.css("border-color", "var(--secondary-color)");
 		error.hide();
 	}
 }
 /* Reset Login Form */
 function ResetLoginForm()
 {
-	$("#login-username").css("border", "none");
-	$("#login-username-error").hide();
-	$("#login-password").css("border", "none");
-	$("#login-password-error").hide();
-	$("#wrong-username-error").hide();
-	$("#wrong-password-error").hide();
+	$("#username").css("border-color", "var(--secondary-color)");
+	$("#password").css("border-color", "var(--secondary-color)");
+	$("small.error").hide();
 }
