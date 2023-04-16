@@ -1,11 +1,4 @@
 <?php
-	if (basename($_SERVER["SCRIPT_FILENAME"]) == basename(__FILE__))
-	{
-		// This file is being accessed directly, so redirect to the home page or another page
-		include("../404.html");
-		exit();
-	}
-
 	/* Add the necessary HTTP headers */
 	header("Access-Control-Allow-Origin: http://127.0.0.1/Comparini/");
 	header("Content-Type: application/json; charset=UTF-8");
@@ -46,15 +39,27 @@
 
 		if ($decoded->exp < $now->getTimestamp())
 		{
-			echo "Token has expired";
+			/* Encode to Json Format */
+			$response = array("success" => false, "redirect" => "../index.html", "message" => "EXPIRED_TOKEN");
+			/* Return as Json Format */
+			echo json_encode($response);
+			exit;
 		}
 		else
 		{
-			echo $admin->__get("firstName");
+			/* Encode to Json Format */
+			$response = array("success" => true, "redirect" => "index.html", "message" => $token);
+			/* Return as Json Format */
+			echo json_encode($response);
+			exit;
 		}
 	}
 	catch (Exception $e)
 	{
-		echo "Invalid token: " . $e->getMessage();
+		/* Encode to Json Format */
+		$response = array("success" => false, "message" => "INVALID_TOKEN");
+		/* Return as Json Format */
+		echo json_encode($response);
+		exit;
 	}
 ?>

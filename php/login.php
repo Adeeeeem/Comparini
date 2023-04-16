@@ -102,8 +102,10 @@
 	/* This file is being accessed directly */
 	else
 	{
-		// This file is being accessed directly, so redirect to the home page or another page
-		include("../404.html");
+		header("HTTP/1.0 404 Not Found");
+		http_response_code(401);
+		include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/404.html");
+		//readfile("../404.html");
 		exit();
 	}
 ?>

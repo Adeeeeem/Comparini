@@ -1,7 +1,7 @@
 /*==================================================
 			Login Form
 ==================================================*/
-#login-form{background-color: var(--body-color); border-radius: .25rem; width: calc(35% - (var(--uk-position-margin-offset) * 2));}
+#login-form{background-color: var(--body-color); border-radius: .25rem; width: calc(30% - (var(--uk-position-margin-offset) * 2));}
 #login-form div.uk-card-header{padding-top: 35px;}
 #login-form div.uk-card-body{padding-top: 15px; padding-bottom: 15px;}
 #login-form div.uk-inline{width: 100%;}
