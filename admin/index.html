@@ -34,7 +34,129 @@
 		</div>
 	</div>
 
-	<h1>YES</h1>
+	<!-- Sections Menu -->
+	<div id="menu">
+		<div id="menu-logo" class="uk-width-1-1 uk-text-center"><img class="uk-margin-small-top" src="../img/Navbar Logo.png"></div>
+		<div class="uk-margin-medium-top uk-margin-large-bottom">
+			<!-- <button id="lights-btn" class="uk-button uk-width-1-1 uk-text-left active"><img src="../images/icons/bulb.png">Lights</button>
+			<button id="groups-btn" class="uk-button uk-width-1-1 uk-text-left"><img src="../images/icons/groups.png">Groups</button>
+			<button id="scenes-btn" class="uk-button uk-width-1-1 uk-text-left"><img src="../images/icons/scenes.png">Scenes</button>
+			<button id="statistics-btn" class="uk-button uk-width-1-1 uk-text-left"><img src="../images/icons/statistics.png">Statistics</button>
+			<ul class="uk-margin-remove" uk-accordion>
+				<li>
+					<button id="configuration-btn" class="uk-button uk-width-1-1 uk-text-left uk-accordion-title"><img src="../images/icons/configuration.png">Configuration</button>
+					<div class="uk-accordion-content uk-text-left">
+						<button id="cards-btn" class="uk-button uk-width-1-1 uk-text-left"><img class="uk-margin-small-right" src="../images/icons/card.png">Cards</button>
+						<button id="floors-btn" class="uk-button uk-width-1-1 uk-text-left"><img class="uk-margin-small-right" src="../images/icons/floor.png">Floors</button>
+						<button id="rooms-btn" class="uk-button uk-width-1-1 uk-text-left"><img class="uk-margin-small-right" src="../images/icons/room.png">Rooms</button>
+						<button id="users-btn" class="uk-button uk-width-1-1 uk-text-left"><img class="uk-margin-small-right" src="../images/icons/users.png">Users</button>
+					</div>
+				</li>
+			</ul>
+			<button id="history-btn" class="uk-button uk-width-1-1 uk-text-left"><img src="../images/icons/history.png">History</button>
+			<button id="settings-btn" class="uk-button uk-width-1-1 uk-text-left"><img src="../images/icons/settings.png">Settings</button>
+			<button id="support-btn" class="uk-button uk-width-1-1 uk-text-left"><img src="../images/icons/support.png">Support</button> -->
+			<button id="logout-btn" class="uk-button uk-width-1-1 uk-text-left logout"><img src="../img/icons/logout.png">Logout</button>
+		</div>
+	</div>
+
+	<!-- Navbar -->
+	<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+		<nav id="nav">
+			<div>
+				<div uk-navbar>
+					<div class="uk-navbar-right">
+						<ul class="uk-navbar-nav">
+							<li><a href="../"><span language-tag="home">Home</span></a></li>
+							<li>
+								<a href="#"><span language-tag="categories">Categories</span></a>
+								<div class="uk-navbar-dropdown uk-navbar-dropdown-width-2">
+									<div class="uk-drop-grid uk-child-width-1-2" uk-grid>
+										<div>
+											<ul class="uk-nav uk-navbar-dropdown-nav">
+												<li class="uk-active"><a href="#">Active</a></li>
+												<li><a href="#">Item</a></li>
+												<li class="uk-nav-header">Header</li>
+												<li><a href="#">Item</a></li>
+												<li><a href="#">Item</a></li>
+												<li class="uk-nav-divider"></li>
+												<li><a href="#">Item</a></li>
+											</ul>
+										</div>
+										<div>
+											<ul class="uk-nav uk-navbar-dropdown-nav">
+												<li class="uk-active"><a href="#">Active</a></li>
+												<li><a href="#">Item</a></li>
+												<li class="uk-nav-header">Header</li>
+												<li><a href="#">Item</a></li>
+												<li><a href="#">Item</a></li>
+												<li class="uk-nav-divider"></li>
+												<li><a href="#">Item</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<a href="#"><span language-tag="languages">Languages</span> <span uk-navbar-parent-icon></span></a>
+								<div class="uk-navbar-dropdown">
+									<ul class="uk-nav uk-navbar-dropdown-nav">
+										<li>
+											<a id="english">
+												<span class="uk-icon uk-margin-small-right">
+													<img src="../img/flags/en.svg" width="20">
+												</span>English
+											</a>
+										</li>
+										<li>
+											<a id="french">
+												<span class="uk-icon uk-margin-small-right">
+													<img src="../img/flags/fr.svg" width="20">
+												</span>Français
+											</a>
+										</li>
+										<li>
+											<a id="arabic">
+												<span class="uk-icon uk-margin-small-right">
+													<img src="../img/flags/ar.svg" width="20">
+												</span>تونسي
+											</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<a href="#"><span language-tag="theme">Theme</span> <span uk-navbar-parent-icon></span></a>
+								<div class="uk-navbar-dropdown">
+									<ul class="uk-nav uk-navbar-dropdown-nav">
+										<li>
+											<a id="light_theme">
+												<span class="uk-icon uk-margin-small-right">
+													<img src="../img/theme/light.png" width="20">
+												</span>Light Theme
+											</a>
+										</li>
+										<li>
+											<a id="dark_theme">
+												<span class="uk-icon uk-margin-small-right">
+													<img src="../img/theme/dark.png" width="20">
+												</span>Dark Theme
+											</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</div>
+
+	<!-- Dashboard -->
+	<div id="dashboard" class="uk-text-center uk-padding-small">
+		
+	</div>
 
 	<!-- UIkit JavaScript 3.16.14 -->
 	<script type="text/javascript" src="../js/uikit.min.js"></script>
