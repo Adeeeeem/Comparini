@@ -2,5 +2,7 @@
 	"home": "Home",
 	"categories": "Categories",
 	"languages": "Languages",
-	"theme": "Theme"
+	"theme": "Theme",
+	"contact": "Contact",
+	"logout": "Logout"
 }
