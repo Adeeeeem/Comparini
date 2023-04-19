@@ -25,9 +25,22 @@
 			/* Connection */
 			private $connection;
 
-			public function __construct($connection)
+			public function __construct($connection = null)
 			{
 				$this->connection = $connection;
+			}
+
+			public static function withAdminObject($admin)
+			{
+				$instance = new self($admin->getConnection());
+				$instance->id = $admin->getId();
+				$instance->isEnabled = $admin->getIsEnabled();
+				$instance->username = $admin->getUsername();
+				$instance->password = $admin->getPassword();
+				$instance->firstName = $admin->getFirstName();
+				$instance->lastName = $admin->getLastName();
+				$instance->email = $admin->getEmail();
+				return $instance;
 			}
 
 			public function __get($attribute)
@@ -74,8 +87,6 @@
 				$request = "SELECT * FROM {$this->table} WHERE LOWER(username) = LOWER(:username) LIMIT 0, 1;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
-				// Avoid any XSS or SQL Injection Function
-				//$username = Security($username);
 				// Binding Parameter
 				$statement->bindParam(":username", $username, PDO::PARAM_STR, 25);
 				// Execute Query
@@ -120,6 +131,11 @@
 				/* Destroy Session */
 				session_unset();
 				session_destroy();
+				$this->connection = null;
+				/* Check if session is destroyed */
+				if(session_status() === PHP_SESSION_NONE)
+					return true; // Logout successful
+				return false; // Logout failed
 			}
 		}
 	}
