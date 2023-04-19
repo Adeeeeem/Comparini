@@ -41,6 +41,7 @@
 						/* Get Admin Class */
 						$admin = new Admin($connection);
 
+						/* Avoid any XSS or SQL Injection Function */
 						$username = Security($data["username"]);
 						$password = Security($data["password"]);
 

@@ -31,6 +31,9 @@ $(function()
 	{
 		e.preventDefault(); // Prevent From Loading the Page
 
+		// Hide the errors
+		ResetLoginForm();
+
 		var username = $("#username").val(); // Get Username
 		var password = $("#password").val(); // Get Password
 
@@ -39,9 +42,6 @@ $(function()
 
 		if (typeof username !== "undefined" && username !== "" && typeof password !== "undefined" && password !== "")
 		{
-			// Hide the errors
-			ResetLoginForm();
-
 			$.ajax
 			({
 				url: "../php/login.php",
@@ -93,56 +93,6 @@ $(function()
 		{
 			$.growl.error({ message: "Whoops! Looks like you forgot to fill in some important details. Don't worry, we won't tell anyone." });
 		}
-
-
-		/*.done(function(response)
-		{
-			switch (response.result)
-				{
-					case "Error": // Error
-						ResetLoginForm();
-						$.growl.error({ message: "Oops, There was an Error!" });
-						$("#login-username").css("border", "1px solid #F32013");
-						$("#login-password").css("border", "1px solid #F32013");
-					break;
-
-					case "Empty": // Empty
-						$.growl.error({ message: "Please fill in the required fields !" });
-					break;
-
-					case "NotFound": // User Not Found
-						ResetLoginForm();
-						$.growl.error({ message: "Sorry, we couldn't find an account with that username. Please try again !" });
-						$("#login-username").css("border", "1px solid #F32013");
-						$("#login-password").css("border", "1px solid #F32013");
-						$("#wrong-username-error").show();
-					break;
-
-					case "Wrong": // Wrong Password
-						ResetLoginForm();
-						$.growl.error({ message: "Sorry, that password doesn't match your username." });
-						$("#login-password").css("border", "1px solid #F32013");
-						$("#wrong-password-error").show();
-					break;
-
-					case "User": // Normal User
-						window.location.href="user/";
-						localStorage.setItem("LightWays_SECTION", "#lights-btn"); // Reset Saved Tabs
-					break;
-
-					case "Admin": // Admin
-						window.location.href="admin/";
-						localStorage.setItem("LightWays_ADMIN_SECTION", "#lights-btn"); // Reset Saved Tabs
-					break;
-				}
-		})
-		.fail(function()
-		{
-			ResetLoginForm();
-			$.growl.error({ message: "Oops, There was an Error!" });
-			$("#login-username").css("border", "1px solid #F32013");
-			$("#login-password").css("border", "1px solid #F32013");
-		});*/
 	});
 });
 /* Check Input */
