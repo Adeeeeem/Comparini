@@ -31,16 +31,16 @@ USE `Comparini`;
 
 DROP TABLE IF EXISTS `Admin`;
 CREATE TABLE IF NOT EXISTS `Admin` (
-  `id` int(2) NOT NULL AUTO_INCREMENT,
-  `is_enabled` tinyint(1) NOT NULL DEFAULT 1,
-  `username` varchar(25) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
+	`id` int(2) NOT NULL AUTO_INCREMENT,
+	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
+	`username` varchar(25) NOT NULL,
+	`password` varchar(255) NOT NULL,
+	`first_name` varchar(50) NOT NULL,
+	`last_name` varchar(50) NOT NULL,
+	`email` varchar(100) DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `username` (`username`),
+	UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
