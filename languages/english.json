@@ -5,5 +5,7 @@
 	"theme": "Theme",
 	"contact": "Contact",
 	"login": "Login",
-	"logout": "Logout"
+	"logout": "Logout",
+	"title": "Welcome to Comparini",
+	"title-caption": "Discover whatever you need easily and at a cheaper price."
 }
