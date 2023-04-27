@@ -28,7 +28,7 @@ $(function()
 				Logout
 ==================================================*/
 /*/ Logout Button */
-$(function ()
+$(function()
 {
 	$("#logout-btn").click(function()
 	{

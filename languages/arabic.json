@@ -7,5 +7,20 @@
 	"login": "الدخول",
 	"logout": "الخروج",
 	"title": "Comparini مرحبا بيك في",
-	"title-caption": ".لوّج على لي تستحقوا بالسّاهل و بسوم أرخص"
+	"title-caption": ".لوّج على لي تستحقوا بالسّاهل و بسوم أرخص",
+	"fruits_vegetables": "الخضرة والغلّة",
+	"meat_poultry": "اللّحم والدواجن",
+	"seafood": "غلّة البحر",
+	"dairy_eggs": "منتجات الحليب والبيض",
+	"bakery_bread": "المخبز والخبز",
+	"canned_packaged_foods": "الماكلة المعلبة",
+	"snacks_confectionery": "الوجبات الخفيفة والحلوة",
+	"beverages": "المشروبات",
+	"spices_seasonings": "التوابل",
+	"sauces_condiments": "الصلصات المالحة",
+	"frozen_foods": "الماكلة المجمدة",
+	"baby_toddler_foods": "دبش الصغار",
+	"pet_foods": "ماكلة الحيوانات الأليفة",
+	"health_foods_supplements": "المكملات الصحية",
+	"electronics": "الإلكترونيك"
 }

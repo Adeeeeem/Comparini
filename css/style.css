@@ -1,2 +1,12 @@
-h1.uk-heading-bullet{margin: 10px 0 5px 25px;}
+h1.uk-heading-bullet{margin: 20px 0 5px 25px; color: var(--text-color);}
 span.uk-text-muted{margin: 10px 0 0 25px;}
+div#categories_filter div#categories{margin-top: 30px; margin-bottom: 20px;}
+div#categories_filter div#categories ul li{cursor: pointer;}
+div#categories_filter div#categories div.uk-card{background-color: transparent; box-shadow: none;}
+div#categories_filter div#categories div.uk-card-body{padding: 20px 0px 0px 0px !important;}
+div#categories_filter div#categories div.uk-card-footer{border: none;}
+div#categories_filter div#categories div.uk-card-footer span{color: var(--text-color);}
+div#categories_filter div#categories img{height: 100px; width: auto;}
+div#categories_filter ul#products{margin: 10px 30px 10px 30px !important;}
+div#categories_filter div#search{margin: 0px 30px 30px 30px !important;}
+div#categories_filter div#search form{width: 50%;}

@@ -36,7 +36,7 @@
 	</div>
 
 	<!-- Navbar -->
-	<div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
+	<div>
 		<nav id="nav">
 			<div>
 				<div uk-navbar>
@@ -47,55 +47,9 @@
 					</div>
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
-							<li><a href="#"><span language-tag="home">Home</span></a></li>
-							<li>
-								<a href="#"><span language-tag="categories">Categories</span></a>
-								<div class="uk-navbar-dropdown uk-navbar-dropdown-width-4">
-									<div class="uk-drop-grid uk-child-width-1-4" uk-grid>
-										<div>
-											<ul class="uk-nav uk-navbar-dropdown-nav">
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-											</ul>
-										</div>
-										<div>
-											<ul class="uk-nav uk-navbar-dropdown-nav">
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-											</ul>
-										</div>
-										<div>
-											<ul class="uk-nav uk-navbar-dropdown-nav">
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-											</ul>
-										</div>
-										<div>
-											<ul class="uk-nav uk-navbar-dropdown-nav">
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li class="uk-nav-header">Header</li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-												<li><a href="#">Item</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</li>
-							<li><a href="#"><span language-tag="contact">Contact</span></a></li>
+							<li><a href="./"><span language-tag="home">Home</span></a></li>
+							<li><a href="./categories.html"><span language-tag="categories">Categories</span></a></li>
+							<li><a href="./contact.html"><span language-tag="contact">Contact</span></a></li>
 							<li>
 								<a href="#"><span language-tag="languages">Languages</span> <span uk-navbar-parent-icon></span></a>
 								<div class="uk-navbar-dropdown">
@@ -155,75 +109,65 @@
 	<h1 class="uk-heading-bullet" language-tag="title">Welcome to Comparini</h1>
 	<span class="uk-text-muted" language-tag="title-caption">Discover whatever you need easily and at a cheaper price.</span>
 
-	<div class="uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slider>
+	<div id="categories_filter">
+		<div class="uk-container">
+			<div id="categories" class="uk-position-relative uk-visible-toggle uk-dark" tabindex="-1" uk-slider>
+				<ul class="uk-slider-items uk-child-width-1-6 uk-child-width-1-2@s uk-child-width-1-4@m">
+					<!-- Load Categories -->
+				</ul>
+				<a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
+				<a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
+			</div>
+		</div>
 
-    <ul class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@m uk-grid">
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider1.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>1</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider2.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>2</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider3.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>3</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider4.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>4</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider5.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>5</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider1.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>6</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider2.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>7</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider3.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>8</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider4.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>9</h1></div>
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel">
-                <img src="images/slider5.jpg" width="400" height="600" alt="">
-                <div class="uk-position-center uk-panel"><h1>10</h1></div>
-            </div>
-        </li>
-    </ul>
+		<div id="search" class="uk-margin">
+			<center>
+				<form class="uk-search uk-search-default">
+					<a href="#" class="uk-search-icon-flip" uk-search-icon></a>
+					<input class="uk-input uk-search-input" type="search" placeholder="Search" aria-label="Search">
+				</form>
+			</center>
+		</div>
 
-    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
-    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
-
-</div>
+		<ul id="products" class="uk-child-width-1-6 uk-text-center" uk-grid>
+			<li>
+				<div class="uk-card uk-card-default uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-primary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-default uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-default uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-secondary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-secondary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-primary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-secondary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-primary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-default uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-primary uk-card-body">Item</div>
+			</li>
+			<li>
+				<div class="uk-card uk-card-secondary uk-card-body">Item</div>
+			</li>
+		</ul>
+	</div>
 
 	<!-- UIkit JavaScript 3.16.14 -->
 	<script type="text/javascript" src="js/uikit.min.js"></script>
@@ -234,6 +178,5 @@
 	<link rel="stylesheet" type="text/css" href="css/jquery.growl.css">
 	<!-- Custom JavaScript -->
 	<script type="text/javascript" src="js/script.js"></script>
-
 </body>
 </html>

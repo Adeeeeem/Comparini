@@ -6,12 +6,12 @@
 	header("Access-Control-Max-Age: 3600");
 	header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-	/* Include the Admin Class */
-	require_once "entities/Admin.php";
-
 	/* This is an AJAX request */
 	if (!empty($_SERVER["HTTP_X_REQUESTED_WITH"]) && strtolower($_SERVER["HTTP_X_REQUESTED_WITH"]) == "xmlhttprequest")
 	{
+		/* Include the Admin Class */
+		require_once "entities/Admin.php";
+
 		/* Check if the admin is already connected */
 		session_start();
 
@@ -44,9 +44,9 @@
 	else
 	{
 		header("HTTP/1.0 404 Not Found");
-		http_response_code(401);
-		include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/404.html");
-		//readfile("../404.html");
+		http_response_code(404);
+		header("Content-Type: text/html; charset=UTF-8");
+		readfile("../404.html");
 		exit();
 	}
 ?>

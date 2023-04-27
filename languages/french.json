@@ -7,5 +7,20 @@
 	"login": "Connexion",
 	"logout": "Déconnexion",
 	"title": "Bienvenue à Comparini",
-	"title-caption": "Découvrez tout ce que vous avez besoin facilement et à un prix moins cher."
+	"title-caption": "Découvrez tout ce que vous avez besoin facilement et à un prix moins cher.",
+	"fruits_vegetables": "Fruits et Légumes",
+	"meat_poultry": "Viande et Volaille",
+	"seafood": "Fruits de Mer",
+	"dairy_eggs": "Lait et ovoproduits",
+	"bakery_bread": "Boulangerie et Pain",
+	"canned_packaged_foods": "Aliments en conserve et emballés",
+	"snacks_confectionery": "Collations et confiseries",
+	"beverages": "Boissons",
+	"spices_seasonings": "Épices et assaisonnements",
+	"sauces_condiments": "Sauces et condiments",
+	"frozen_foods": "Aliments surgelés",
+	"baby_toddler_foods": "Aliments pour bébés et tout-petits",
+	"pet_foods": "Aliments pour animaux",
+	"health_foods_supplements": "Aliments santé et suppléments",
+	"electronics": "Électroniques"
 }

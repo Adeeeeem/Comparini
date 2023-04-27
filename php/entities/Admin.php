@@ -1,9 +1,9 @@
 <?php
 	/* Generate Web Json Token */
-	include_once "jwt/src/BeforeValidException.php";
-	include_once "jwt/src/ExpiredException.php";
-	include_once "jwt/src/SignatureInvalidException.php";
-	include_once "jwt/src/JWT.php";
+	include_once "../jwt/src/BeforeValidException.php";
+	include_once "../jwt/src/ExpiredException.php";
+	include_once "../jwt/src/SignatureInvalidException.php";
+	include_once "../jwt/src/JWT.php";
 
 	use \Firebase\JWT\JWT;
 
@@ -143,9 +143,9 @@
 	else
 	{
 		header("HTTP/1.0 404 Not Found");
-		http_response_code(401);
-		include_once($_SERVER["DOCUMENT_ROOT"]."/Comparini/404.html");
-		//readfile("../../404.html");
+		http_response_code(404);
+		header("Content-Type: text/html; charset=UTF-8");
+		readfile("../../404.html");
 		exit();
 	}
 ?>

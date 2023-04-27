@@ -26,9 +26,9 @@ table th, table td{text-align: center !important; vertical-align: middle !import
 			Custom UIkit Preferences
 ==================================================*/
 .uk-grid{margin-left: 0 !important;}
-.uk-grid>*{padding-left: 0 !important;}
+.uk-grid > *{padding-left: 0 !important;}
 div.uk-modal-dialog{overflow-x: hidden;}
-div.uk-open>.uk-modal-dialog{padding-bottom: 0;}
+div.uk-open > .uk-modal-dialog{padding-bottom: 0;}
 div.uk-modal-dialog.big-width{width: 95%;}
 div.uk-modal-dialog, div.uk-modal-body{background-color:  var(--body-color); border-radius: 0.5rem;}
 div.uk-modal-dialog .uk-modal-title{font-size: 1.7rem; color: var(--text-color);}
@@ -40,13 +40,14 @@ button.uk-modal-close-default:hover, button.uk-modal-close-default:focus{color: 
 .uk-modal-footer button:hover, .uk-modal-footer button:focus{background-color: var(--secondary-color);}
 label.uk-form-label{font-size: 12px; letter-spacing: 1px; color: var(--text-color) !important;}
 .uk-accordion-title::before{display: none;}
-input.uk-input, select.uk-input, input.uk-input:focus, select.uk-input:focus{border: 1px solid var(--secondary-color); background-color: var(--input-color);}
+input.uk-input, select.uk-input, input.uk-search-input, input.uk-input:focus, select.uk-input:focus{border: 1px solid var(--secondary-color) !important; background-color: var(--input-color) !important;}
 input.uk-checkbox{width: 15px; height: 15px !important;}
 input.uk-checkbox:checked:focus, input.uk-checkbox:checked{background-color: var(--primary-color);}
-.uk-table-hover tbody tr:hover,.uk-table-hover>tr:hover{background-color: var(--primary-color);}
+.uk-table-hover tbody tr:hover,.uk-table-hover > tr:hover{background-color: var(--primary-color);}
 div.uk-tooltip-inner span{color: var(--primary-color);}
 .uk-list ul{padding-left: 50px;}
 .uk-hr, hr{border-top: none;}
+a.uk-position-small{color: var(--text-color) !important;}
 /*==================================================
 				Preloader
 ==================================================*/
@@ -65,6 +66,7 @@ small.error{display: none;}
 ==================================================*/
 nav#nav{padding: 0 30px 0 30px; background-color: var(--nav-color) !important;}
 nav#nav .uk-navbar-nav > li > a{color: var(--nav-text-color) !important;}
+/*div.uk-sticky-placeholder{height: 80px !important;}*/
 /*==================================================
 			404 Not Found Page
 ==================================================*/
@@ -72,6 +74,6 @@ nav#nav .uk-navbar-nav > li > a{color: var(--nav-text-color) !important;}
 #notfound div.notfound{max-width: 767px; width: 100%; line-height: 1; padding: 50px 50px; text-align: center;}
 #notfound div.notfound-inner{position: relative; height: 180px; margin-top: -50px;}
 #notfound div.notfound-inner h1{position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); font-size: 8rem; font-weight: 700; margin: 0px; color: var(--primary-color); text-transform: uppercase;}
-#notfound div.notfound-inner h1>span{color: var(--secondary-color);}
+#notfound div.notfound-inner h1 > span{color: var(--secondary-color);}
 #notfound div.notfound h2{font-size: 0.85rem; text-transform: uppercase; color: var(--text-color); margin-top: 0px; font-weight: 600;}
 #notfound div.notfound button{margin-bottom: 10px; margin-top: 10px; color: var(--input-color); border-radius: .25rem; background-color: var(--secondary-color); width: 200px; height: 35px; line-height: 1;}
