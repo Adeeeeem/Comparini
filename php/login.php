@@ -38,6 +38,7 @@
 						/* Get BD connection */
 						$database = new Database();
 						$connection = $database->getConnection();
+
 						/* Get Admin Class */
 						$admin = new Admin($connection);
 
