@@ -84,7 +84,7 @@ $(function()
 
 				if (response.success)
 				{
-					
+					var categoryHTML = '<li><div class="uk-card uk-card-default uk-card-body">Item</div></li>';
 				}
 			},
 			error: function(xhr, textStatus, errorThrown)
