@@ -47,9 +47,10 @@ $(window).on("load", function()
 
 			if (response.success)
 			{
-				$.each(response.categories, function(index, category)
+				$.each(response.products, function(index, product)
 				{
-					var categoryHTML = '<li><div class="uk-card uk-card-default uk-card-body">Item</div></li>';
+					var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><img src="' + product.image + '" alt=' + product.name + '"><h4>' + product.name + '</h4><p>' + product.description + '</p></div></li>';
+					$("div#categories_filter ul#products").append(productHTML);
 				});
 			}
 			else

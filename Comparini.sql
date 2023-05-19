@@ -32,17 +32,14 @@ USE `Comparini`;
 DROP TABLE IF EXISTS `Admin`;
 CREATE TABLE IF NOT EXISTS `Admin`
 (
-	`id` int(2) NOT NULL AUTO_INCREMENT,
+	`id` int(2) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`username` varchar(25) NOT NULL,
 	`password` varchar(255) NOT NULL,
 	`first_name` varchar(50) NOT NULL,
 	`last_name` varchar(50) NOT NULL,
-	`email` varchar(100) DEFAULT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `username` (`username`),
-	UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+	`email` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Truncate table before insert `admin`
@@ -66,13 +63,11 @@ INSERT INTO `Admin` (`id`, `is_enabled`, `username`, `password`, `first_name`, `
 DROP TABLE IF EXISTS `Category`;
 CREATE TABLE IF NOT EXISTS `Category`
 (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`label` varchar(255) NOT NULL,
-	`name` varchar(255) NOT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE KEY `label` (`label`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+	`name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Truncate table before insert `Category`
@@ -110,13 +105,13 @@ INSERT INTO `Category` (`id`, `is_enabled`, `label`, `name`) VALUES
 DROP TABLE IF EXISTS `Product`;
 CREATE TABLE IF NOT EXISTS `Product`
 (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`name` varchar(255) NOT NULL,
 	`description` varchar(255) DEFAULT NULL,
-	`image` varchar(255) NOT NULL,
-	`viewed` int(11) NOT NULL DEFAULT 1,
-	PRIMARY KEY (`id`)
+	`image` varchar(255) DEFAULT NULL,
+	`manufacture` VARCHAR(255) DEFAULT NULL,
+	`viewed` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -140,17 +135,13 @@ TRUNCATE TABLE `Product`;
 DROP TABLE IF EXISTS `Product_Provider`;
 CREATE TABLE IF NOT EXISTS `Product_Provider`
 (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
-	`price` decimal(10,0) NOT NULL,
+	`price` decimal(10,3) DEFAULT NULL,
 	`link` varchar(255) DEFAULT NULL,
 	`product_id` int(11) NOT NULL,
 	`provider_id` int(11) NOT NULL,
-	`sub_category_id` int(11) NOT NULL,
-	PRIMARY KEY (`id`),
-	KEY `fk_product` (`product_id`),
-	KEY `fk_provider` (`provider_id`),
-	KEY `fk_sub_category` (`sub_category_id`)
+	`sub_category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -174,13 +165,11 @@ TRUNCATE TABLE `Product_Provider`;
 DROP TABLE IF EXISTS `Provider`;
 CREATE TABLE IF NOT EXISTS `Provider`
 (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`name` varchar(255) NOT NULL,
 	`adresse` varchar(255) NOT NULL,
-	`image` varchar(255) NOT NULL,
-	`link` varchar(255) NOT NULL,
-	PRIMARY KEY (`id`)
+	`link` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -193,7 +182,8 @@ TRUNCATE TABLE `Provider`;
 -- Dumping data for table `Provider`
 --
 
--- INSERT
+INSERT INTO `provider` (`id`, `is_enabled`, `name`, `adresse`, `link`) VALUES
+(1, 1, 'Monoprix', 'Taieb Mhiri, Ez Zahra', 'https://courses.monoprix.tn/ezzahra/');
 
 -- --------------------------------------------------------
 
@@ -204,12 +194,10 @@ TRUNCATE TABLE `Provider`;
 DROP TABLE IF EXISTS `Sub_Category`;
 CREATE TABLE IF NOT EXISTS `Sub_Category`
 (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`name` varchar(255) NOT NULL,
-	`category_id` int(11) NOT NULL,
-	PRIMARY KEY (`id`),
-	KEY `fk_category` (`category_id`)
+	`category_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -222,9 +210,112 @@ TRUNCATE TABLE `Sub_Category`;
 -- Dumping data for table `Sub_Category`
 --
 
--- INSERT
+INSERT INTO `sub_category` (`id`, `is_enabled`, `name`, `category_id`) VALUES
+(1, 1, 'juice', 8),
+(2, 1, 'soda', 8),
+(3, 1, 'water', 8);
 
 -- --------------------------------------------------------
+
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Admin`
+--
+
+ALTER TABLE `Admin`
+	ADD PRIMARY KEY `pk_admin` (`id`),
+	ADD UNIQUE KEY `uk_admin_username` (`username`),
+	ADD UNIQUE KEY `uk_admin_email` (`email`);
+
+--
+-- Indexes for table `Category`
+--
+
+ALTER TABLE `Category`
+	ADD PRIMARY KEY `pk_category` (`id`),
+	ADD UNIQUE KEY `uk_category_label` (`label`);
+
+--
+-- Indexes for table `Product`
+--
+
+ALTER TABLE `Product`
+	ADD PRIMARY KEY `pk_product` (`id`);
+
+--
+-- Indexes for table `Product_Provider`
+--
+
+ALTER TABLE `Product_Provider`
+	ADD PRIMARY KEY `pk_product_provider` (`id`),
+	ADD KEY `fk_product` (`product_id`),
+	ADD KEY `fk_provider` (`provider_id`),
+	ADD KEY `fk_sub_category` (`sub_category_id`);
+
+--
+-- Indexes for table `Provider`
+--
+
+ALTER TABLE `Provider`
+	ADD PRIMARY KEY `pk_provider` (`id`);
+
+--
+-- Indexes for table `Sub_Category`
+--
+
+ALTER TABLE `Sub_Category`
+	ADD PRIMARY KEY `pk_sub_category` (`id`),
+	ADD KEY `fk_category` (`category_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Admin`
+--
+
+ALTER TABLE `Admin`
+	MODIFY `id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `Category`
+--
+
+ALTER TABLE `Category`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `Product`
+--
+
+ALTER TABLE `Product`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `Product_Provider`
+--
+
+ALTER TABLE `Product_Provider`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+--
+-- AUTO_INCREMENT for table `Provider`
+--
+
+ALTER TABLE `Provider`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `Sub_Category`
+--
+
+ALTER TABLE `Sub_Category`
+	MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -234,16 +325,16 @@ TRUNCATE TABLE `Sub_Category`;
 -- Constraints for table `Product_Provider`
 --
 
-ALTER TABLE `product_provider`
-	ADD CONSTRAINT `fk_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT `fk_provider` FOREIGN KEY (`provider_id`) REFERENCES `provider` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-	ADD CONSTRAINT `fk_sub_category` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Product_Provider`
+	ADD CONSTRAINT `fk_product` FOREIGN KEY (`product_id`) REFERENCES `Product` (`id`),
+	ADD CONSTRAINT `fk_provider` FOREIGN KEY (`provider_id`) REFERENCES `Provider` (`id`),
+	ADD CONSTRAINT `fk_sub_category` FOREIGN KEY (`sub_category_id`) REFERENCES `Sub_Category` (`id`);
 
 --
--- Constraints for table `sub_category`
+-- Constraints for table `Sub_Category`
 --
 
-ALTER TABLE `sub_category`
+ALTER TABLE `Sub_Category`
 	ADD CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 COMMIT;

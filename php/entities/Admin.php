@@ -84,13 +84,17 @@
 			public function login($username, $password)
 			{
 				// Prepare the SQL statement to fetch the admin by username and password
-				$request = "SELECT * FROM {$this->table} WHERE LOWER(username) = LOWER(:username) LIMIT 0, 1;";
+				$request = "SELECT * FROM {$this->table}
+				WHERE is_enabled = true
+					AND LOWER(username) = LOWER(:username)
+				LIMIT 0, 1;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
 				$statement->bindParam(":username", $username, PDO::PARAM_STR, 25);
 				// Execute Query
 				$statement->execute();
+
 				if ($statement->rowCount() == 1)
 				{
 					/* Retrieve Details */
