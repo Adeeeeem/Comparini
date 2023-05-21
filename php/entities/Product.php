@@ -350,7 +350,12 @@
 			public function getTopProductsLimited($number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT * FROM {$this->table} WHERE is_enabled = true ORDER BY viewed DESC LIMIT :number;";
+				$request = "SELECT P.name, P.description, P.manufacture, P.image, MIN(PP.price) AS price FROM {$this->table} P
+				INNER JOIN {$this->productProviderTable} PP
+					ON P.id = PP.product_id
+				WHERE P.is_enabled = true
+				GROUP BY P.name, P.description, P.manufacture
+				ORDER BY viewed DESC LIMIT :number;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
@@ -366,7 +371,7 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.image, P.description, PP.price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, P.image, P.description, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
@@ -375,6 +380,7 @@
 					ON SC.category_id = C.id
 				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true
 					AND C.label = :category
+				GROUP BY P.name, P.description, P.manufacture
 				ORDER BY P.viewed DESC
 				LIMIT :number;";
 				// Preparing Statement
