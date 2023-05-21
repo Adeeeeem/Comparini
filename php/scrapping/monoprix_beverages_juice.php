@@ -76,7 +76,7 @@
 					$product = new Product($connection);
 
 					$product->setName($title);
-					$product->setManufacturer($manufacture);
+					$product->setManufacture($manufacture);
 					$product->setPrice($price);
 					$product->setImage($image);
 					$product->setDescription($description);
@@ -99,11 +99,6 @@
 
 		/* Disable internal error handling */
 		libxml_use_internal_errors(false);
-
-		if (!$productsFound)
-		{
-			echo "No product elements found." . PHP_EOL;
-		}
 	}
 	/* This file is being accessed directly */
 	else

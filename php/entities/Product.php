@@ -35,19 +35,14 @@
 				$this->connection = $connection;
 			}
 
-			public function setId($id)
-			{
-				$this->id = $id;
-			}
-
 			public function getId()
 			{
 				return $this->id;
 			}
 
-			public function setIsEnabled($isEnabled)
+			public function setId($id)
 			{
-				$this->isEnabled = $isEnabled;
+				$this->id = $id;
 			}
 
 			public function getIsEnabled()
@@ -55,9 +50,9 @@
 				return $this->isEnabled;
 			}
 
-			public function setName($name)
+			public function setIsEnabled($isEnabled)
 			{
-				$this->name = $name;
+				$this->isEnabled = $isEnabled;
 			}
 
 			public function getName()
@@ -65,9 +60,9 @@
 				return $this->name;
 			}
 
-			public function setDescription($description)
+			public function setName($name)
 			{
-				$this->description = $description;
+				$this->name = $name;
 			}
 
 			public function getDescription()
@@ -75,9 +70,9 @@
 				return $this->description;
 			}
 
-			public function setImage($image)
+			public function setDescription($description)
 			{
-				$this->image = $image;
+				$this->description = $description;
 			}
 
 			public function getImage()
@@ -85,19 +80,19 @@
 				return $this->image;
 			}
 
-			public function setManufacturer($manufacture)
+			public function setImage($image)
 			{
-				$this->manufacture = $manufacture;
+				$this->image = $image;
 			}
 
-			public function getManufacturer()
+			public function getManufacture()
 			{
 				return $this->manufacture;
 			}
 
-			public function setPrice($price)
+			public function setManufacture($manufacture)
 			{
-				$this->price = $price;
+				$this->manufacture = $manufacture;
 			}
 
 			public function getPrice()
@@ -105,9 +100,9 @@
 				return $this->price;
 			}
 
-			public function setLink($link)
+			public function setPrice($price)
 			{
-				$this->link = $link;
+				$this->price = $price;
 			}
 
 			public function getLink()
@@ -115,9 +110,9 @@
 				return $this->link;
 			}
 
-			public function setCategory($category)
+			public function setLink($link)
 			{
-				$this->category = $category;
+				$this->link = $link;
 			}
 
 			public function getCategory()
@@ -125,9 +120,9 @@
 				return $this->category;
 			}
 
-			public function setSubCategory($subCategory)
+			public function setCategory($category)
 			{
-				$this->subCategory = $subCategory;
+				$this->category = $category;
 			}
 
 			public function getSubCategory()
@@ -135,9 +130,9 @@
 				return $this->subCategory;
 			}
 
-			public function setViewed($viewed)
+			public function setSubCategory($subCategory)
 			{
-				$this->viewed = $viewed;
+				$this->subCategory = $subCategory;
 			}
 
 			public function getViewed()
@@ -145,9 +140,9 @@
 				return $this->viewed;
 			}
 
-			public function setProvider($provider)
+			public function setViewed($viewed)
 			{
-				$this->provider = $provider;
+				$this->viewed = $viewed;
 			}
 
 			public function getProvider()
@@ -155,10 +150,25 @@
 				return $this->provider;
 			}
 
+			public function setProvider($provider)
+			{
+				$this->provider = $provider;
+			}
+
 			public function addProduct()
 			{
 				if ($this->productExists())
+				{
+					// Check if the price is different
+					$existingPrice = $this->getExistingPrice();
+
+					if ($existingPrice !== $this->getPrice())
+					{
+						$this->updatePrice($this->getPrice());
+					}
+
 					return false;
+				}
 
 				// Prepare the SQL statement to insert a new product
 				$request = "INSERT INTO {$this->table}
@@ -171,7 +181,7 @@
 				$statement->bindParam(":name", $this->getName(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":image", $this->getImage(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":manufacture", $this->getManufacturer(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
 				// Execute Query
 				$result = $statement->execute();
 
@@ -180,9 +190,9 @@
 					// Retrieve the newly inserted product ID
 					$this->setId($this->connection->lastInsertId());
 					// Retrieve the provider ID based on the provider name
-					$providerId = $this->getProviderIdByName($this->provider);
+					$providerId = $this->getProviderIdByName($this->getProvider());
 					// Retrieve the subcategory ID based on the subcategory name
-					$subCategoryId = $this->getSubCategoryIdByName($this->subCategory);
+					$subCategoryId = $this->getSubCategoryIdByName($this->getSubCategory());
 
 					// Prepare the SQL statement to insert a new product
 					$request = "INSERT INTO {$this->productProviderTable}
@@ -206,6 +216,62 @@
 				return false;
 			}
 
+			private function getExistingPrice()
+			{
+				// Prepare the SQL statement
+				$request = "SELECT PP.price FROM {$this->table} PC
+				INNER JOIN {$this->productProviderTable} PP
+					ON PC.id = PP.product_id
+				INNER JOIN {$this->providerTable} PV
+					ON PV.id = PP.provider_id
+				WHERE PC.is_enabled = true AND PV.is_enabled = true
+					AND LOWER(PC.name) = LOWER(:product_name)
+					AND LOWER(PC.description) = LOWER(:description)
+					AND LOWER(PC.manufacture) = LOWER(:manufacture)
+					AND LOWER(PV.name) = LOWER(:provider_name)
+				LIMIT 0, 1;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":product_name", $this->getName(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":provider_name", $this->getProvider(), PDO::PARAM_STR, 255);
+				// Execute Query
+				$statement->execute();
+
+				if ($statement->rowCount() > 0)
+				{
+					// Get the existing price
+					$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+					return $result["price"];
+				}
+
+				return null;
+			}
+
+			private function updatePrice($new_price)
+			{
+				$providerId = $this->getProviderIdByName($this->getProvider());
+
+				// Prepare the SQL statement to update the price
+				$request = "UPDATE {$this->productProviderTable}
+				SET price = :new_price
+				WHERE product_id = :product_id
+				AND provider_id = :provider_id;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":new_price", $new_price, PDO::PARAM_STR);
+				$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
+				$statement->bindParam(":provider_id", $providerId, PDO::PARAM_INT);
+				// Execute Query
+				$result = $statement->execute();
+
+				return $result;
+			}
+
 			private function productExists()
 			{
 				// Prepare the SQL statement
@@ -225,13 +291,19 @@
 				// Binding Parameter
 				$statement->bindParam(":product_name", $this->getName(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":manufacture", $this->getManufacturer(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":provider_name", $this->getProvider(), PDO::PARAM_STR, 255);
 				// Execute Query
 				$statement->execute();
 
 				if ($statement->rowCount() > 0)
+				{
+					// Retrieve the product ID
+					$row = $statement->fetch(PDO::FETCH_ASSOC);
+					$this->setId($row["id"]);
+
 					return true;
+				}
 				return false;
 			}
 
@@ -294,7 +366,17 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.image, PP.price FROM {$this->table} P INNER JOIN {$this->productProviderTable} PP ON P.id = PP.product_id INNER JOIN {$this->subCategoryTable} SC ON PP.sub_category_id = SC.id INNER JOIN {$this->categoryTable} C ON SC.category_id = C.id WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true AND PP.is_enabled AND C.label = :category ORDER BY P.viewed DESC LIMIT :number;";
+				$request = "SELECT P.id, P.name, P.image, PP.price FROM {$this->table} P
+				INNER JOIN {$this->productProviderTable} PP
+					ON P.id = PP.product_id
+				INNER JOIN {$this->subCategoryTable} SC
+					ON PP.sub_category_id = SC.id
+				INNER JOIN {$this->categoryTable} C
+					ON SC.category_id = C.id
+				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true
+					AND C.label = :category
+				ORDER BY P.viewed DESC
+				LIMIT :number;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
