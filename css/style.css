@@ -10,3 +10,6 @@ div#categories_filter div#categories img{height: 100px; width: auto;}
 div#categories_filter ul#products{margin: 10px 30px 10px 30px !important;}
 div#categories_filter div#search{margin: 0px 30px 30px 30px !important;}
 div#categories_filter div#search form{width: 50%;}
+ul#products li div.uk-card{background-color: transparent;}
+ul#products li div.uk-card h4{color: var(--text-color);}
+ul#products li div.uk-card p{color: #999!important;}

@@ -1,9 +1,9 @@
 <?php
 	/* Generate Web Json Token */
-	include_once "../jwt/src/BeforeValidException.php";
-	include_once "../jwt/src/ExpiredException.php";
-	include_once "../jwt/src/SignatureInvalidException.php";
-	include_once "../jwt/src/JWT.php";
+	include_once "jwt/src/BeforeValidException.php";
+	include_once "jwt/src/ExpiredException.php";
+	include_once "jwt/src/SignatureInvalidException.php";
+	include_once "jwt/src/JWT.php";
 
 	use \Firebase\JWT\JWT;
 
