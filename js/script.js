@@ -85,7 +85,13 @@ $(function()
 
 				if (response.success)
 				{
-					var categoryHTML = '<li><div class="uk-card uk-card-default uk-card-body">Item</div></li>';
+					$("div#categories_filter ul#products").empty();
+
+					$.each(response.products, function(index, product)
+					{
+						var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><img src="' + product.image + '" alt=' + product.name + '"><h4>' + product.name + '</h4><p>' + product.description + '</p></div></li>';
+						$("div#categories_filter ul#products").append(productHTML);
+					});
 				}
 			},
 			error: function(xhr, textStatus, errorThrown)

@@ -20,8 +20,24 @@
 		{
 			/* Retrieve DATA from the HTML form */
 			$dataJSON = file_get_contents("php://input");
-			$data = array();
-			parse_str($dataJSON, $data);
+
+			if ($_SERVER["CONTENT_TYPE"] === "application/json")
+			{
+				$data = array();
+				parse_str($dataJSON, $data);
+			}
+			elseif ($_SERVER["CONTENT_TYPE"] === "application/x-www-form-urlencoded")
+			{
+				$data = json_decode($dataJSON, true);
+			}
+			else
+			{
+				/* Encode to Json Format */
+				$response = array("success" => false, "message" => "INVALID_REQUEST");
+				/* Return as Json Format */
+				echo json_encode($response);
+				exit;
+			}
 
 			if ( isset($data) && !empty($data) )
 			{

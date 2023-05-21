@@ -366,7 +366,7 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.image, PP.price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, P.image, P.description, PP.price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
