@@ -371,7 +371,7 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.image, P.description, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, P.image, P.description, P.manufacture, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
@@ -394,6 +394,33 @@
 				$products = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 				return $products;
+			}
+
+			public function searchProducts($value)
+			{
+				if (!empty($value))
+				{
+					// Prepare the SQL statement to fetch products limited
+					$request = "SELECT P.name, P.description, P.manufacture, P.image, MIN(PP.price) AS price FROM {$this->table} P
+					INNER JOIN {$this->productProviderTable} PP
+						ON P.id = PP.product_id
+					WHERE P.is_enabled = true
+					AND (UPPER(P.name) LIKE '%" . strtoupper($value) . "%'
+					OR UPPER(P.description) LIKE '%" . strtoupper($value) . "%'
+					OR UPPER(P.manufacture) LIKE '%" . strtoupper($value) . "%')
+					GROUP BY P.name, P.description, P.manufacture
+					ORDER BY viewed DESC;";
+					// Preparing Statement
+					$statement = $this->connection->prepare($request);
+					// Execute Query
+					$statement->execute();
+					/* Retrieve Products */
+					$products = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+					return $products;
+				}
+
+				return this->getTopProductsLimited(24);
 			}
 		}
 	}

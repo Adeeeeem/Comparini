@@ -17,6 +17,7 @@ ul#products li div.uk-card p{color: #999 !important;}
 ul#products li div.uk-card.uk-card-body{padding: 10px 5px !important;}
 ul#products li div.uk-card.uk-card-body img{width: 150px !important; aspect-ratio: 1 / 1 !important; object-fit: cover !important;}
 ul#products li div.uk-card.uk-card-body h5{font-weight: bold; color: #CC1C39; bottom: 0;}
+ul#products li div.uk-card.uk-card-body h6{font-weight: bold; color: #999; bottom: 0;}
 ul#products li div.uk-card.uk-card-body span.favorite-icon{position: relative; margin-top: 4px; margin-right: 4px;}
 ul#products li div.uk-card.uk-card-body span.favorite-icon svg .favorite-heart{fill: none; stroke: var(--text-color); stroke-width: 1.03;}
-ul#products li div.uk-card.uk-card-body span.favorite-icon:hover svg .favorite-heart {fill: #CC1C39; stroke: #CC1C39;}
+ul#products li div.uk-card.uk-card-body span.favorite-icon:hover svg .favorite-heart{fill: #CC1C39; stroke: #CC1C39;}

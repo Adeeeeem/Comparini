@@ -42,7 +42,7 @@
 			if ( isset($data) && !empty($data) )
 			{
 				/* If Category ID is not Empty */
-				if ( isset($data["category_id"]) && !empty($data["category_id"]) )
+				if ( isset($data["search_value"]) && !empty($data["search_value"]) )
 				{
 					/* Sanitize input data */
 					$data = array_map("Security", $data);
@@ -55,10 +55,27 @@
 					$product = new Product($connection);
 
 					/* Avoid any XSS or SQL Injection Function */
-					$category_id = Security($data["category_id"]);
+					$search_value = Security($data["search_value"]);
 
-					/* Get Top Products by Category Limited */
-					$products = $product->getTopProductsByCategoryLimited($category_id, 24);
+					/* Get Products */
+					$products = $product->searchProducts($search_value);
+
+					/* Encode to Json Format */
+					$response = array("success" => true, "products" => $products);
+					/* Return as Json Format */
+					echo json_encode($response);
+					exit;
+				}
+				else
+				{
+					/* Get BD connection */
+					$database = new Database();
+					$connection = $database->getConnection();
+
+					/* Get Product Class */
+					$product = new Product($connection);
+					/* Get Top Products Limited */
+					$products = $product->getTopProductsLimited(24);
 
 					/* Encode to Json Format */
 					$response = array("success" => true, "products" => $products);

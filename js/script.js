@@ -1,3 +1,6 @@
+/*==================================================
+			on Window Reload
+==================================================*/
 $(window).on("load", function()
 {
 /*==================================================
@@ -49,8 +52,8 @@ $(window).on("load", function()
 			{
 				$.each(response.products, function(index, product)
 				{
-					var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.description + '</p><h5>' + product.price + ' DT</h5></div></li>';
-					$("div#categories_filter ul#products").append(productHTML);
+					var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.description + '</p><h5>' + product.price + ' DT</h5></div></li>';
+						$("div#categories_filter ul#products").append(productHTML);
 				});
 			}
 			else
@@ -64,10 +67,13 @@ $(window).on("load", function()
 	});
 });
 /*==================================================
-			Filter by Category
+			on Document Ready
 ==================================================*/
 $(function()
 {
+/*==================================================
+			Filter by Category
+==================================================*/
 	$("div#categories_filter div#categories").on("click", "div.uk-card", function()
 	{
 		var category_id = $(this).attr("id");
@@ -89,7 +95,43 @@ $(function()
 
 					$.each(response.products, function(index, product)
 					{
-						var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.description + '</p><h5>' + product.price + ' DT</h5></div></li>';
+						var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.description + '</p><h5>' + product.price + ' DT</h5></div></li>';
+						$("div#categories_filter ul#products").append(productHTML);
+					});
+				}
+			},
+			error: function(xhr, textStatus, errorThrown)
+			{
+				$.growl.error({ message: "Our hamsters are working hard to fix the issue. Please bear with us and try again soon." });
+				console.log(xhr.responseText);
+			}
+		});
+	});
+/*==================================================
+			Search for a Product
+==================================================*/
+	$("div#categories_filter div#search input").keyup(function()
+	{
+		var search_value = $(this).val();
+
+		$.ajax
+		({
+			url: "php/search_product.php",
+			type: "POST",
+			dataType: "json",
+			contentType: "application/json",
+			data: {search_value, search_value},
+			success: function(response)
+			{
+				console.log(response);
+
+				if (response.success)
+				{
+					$("div#categories_filter ul#products").empty();
+
+					$.each(response.products, function(index, product)
+					{
+						var productHTML = '<li><div class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.description + '</p><h5>' + product.price + ' DT</h5></div></li>';
 						$("div#categories_filter ul#products").append(productHTML);
 					});
 				}
