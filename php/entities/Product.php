@@ -157,30 +157,61 @@
 
 			public function addProduct()
 			{
+				// Check if the Product exists
 				if ($this->productExists())
 				{
-					// Check if the price is different
-					$existingPrice = $this->getExistingPrice();
-
-					if ($existingPrice !== $this->getPrice())
+					// Check if the Provider of this Product exists
+					if ($this->ProviderExists())
 					{
-						$this->updatePrice($this->getPrice());
-					}
+						// Check if the price is different
+						$existingPrice = $this->getExistingPrice();
 
-					return false;
+						if ($existingPrice !== $this->getPrice())
+						{
+							$this->updatePrice($this->getPrice());
+						}
+
+						return false;
+					}
+					else
+					{
+						// Retrieve the provider ID based on the provider name
+						$providerId = $this->getProviderIdByName($this->getProvider());
+
+						// Retrieve the subcategory ID based on the subcategory name
+						$subCategoryId = $this->getSubCategoryIdByName($this->getSubCategory());
+
+						// Prepare the SQL statement to insert a new product
+						$request = "INSERT INTO {$this->productProviderTable}
+						(price, image, link, product_id, provider_id, sub_category_id)
+						VALUES
+						(:price, :image, :link, :product_id, :provider_id, :sub_category_id);";
+						// Preparing Statement
+						$statement = $this->connection->prepare($request);
+						// Binding Parameter
+						$statement->bindParam(":price", $this->getPrice(), PDO::PARAM_STR);
+						$statement->bindParam(":image", $this->getImage(), PDO::PARAM_STR, 255);
+						$statement->bindParam(":link", $this->getLink(), PDO::PARAM_STR, 255);
+						$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
+						$statement->bindParam(":provider_id", $providerId, PDO::PARAM_INT);
+						$statement->bindParam(":sub_category_id", $subCategoryId, PDO::PARAM_INT);
+						// Execute Query
+						$result = $statement->execute();
+
+						return $result;
+					}
 				}
 
 				// Prepare the SQL statement to insert a new product
 				$request = "INSERT INTO {$this->table}
-				(name, description, image, manufacture)
+				(name, description, manufacture)
 				VALUES
-				(:name, :description, :image, :manufacture);";
+				(:name, :description, :manufacture);";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
 				$statement->bindParam(":name", $this->getName(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":image", $this->getImage(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
 				// Execute Query
 				$result = $statement->execute();
@@ -196,13 +227,14 @@
 
 					// Prepare the SQL statement to insert a new product
 					$request = "INSERT INTO {$this->productProviderTable}
-					(price, link, product_id, provider_id, sub_category_id)
+					(price, image, link, product_id, provider_id, sub_category_id)
 					VALUES
-					(:price, :link, :product_id, :provider_id, :sub_category_id);";
+					(:price, :image, :link, :product_id, :provider_id, :sub_category_id);";
 					// Preparing Statement
 					$statement = $this->connection->prepare($request);
 					// Binding Parameter
 					$statement->bindParam(":price", $this->getPrice(), PDO::PARAM_STR);
+					$statement->bindParam(":image", $this->getImage(), PDO::PARAM_STR, 255);
 					$statement->bindParam(":link", $this->getLink(), PDO::PARAM_STR, 255);
 					$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
 					$statement->bindParam(":provider_id", $providerId, PDO::PARAM_INT);
@@ -216,6 +248,32 @@
 				return false;
 			}
 
+			private function ProviderExists()
+			{
+				// Prepare the SQL statement
+				$request = "SELECT provider_id FROM {$this->productProviderTable}
+				WHERE product_id = :product_id
+					AND provider_id = :provider_id
+				LIMIT 0, 1;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
+				$statement->bindParam(":provider_id", $this->getProviderIdByName($this->getProvider()), PDO::PARAM_INT);
+				// Execute Query
+				$statement->execute();
+
+				if ($statement->rowCount() > 0)
+				{
+					// Get the existing price
+					$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+					return $result["provider_id"];
+				}
+
+				return null;
+			}
+
 			private function getExistingPrice()
 			{
 				// Prepare the SQL statement
@@ -225,10 +283,10 @@
 				INNER JOIN {$this->providerTable} PV
 					ON PV.id = PP.provider_id
 				WHERE PC.is_enabled = true AND PV.is_enabled = true
-					AND LOWER(PC.name) = LOWER(:product_name)
-					AND LOWER(PC.description) = LOWER(:description)
-					AND LOWER(PC.manufacture) = LOWER(:manufacture)
-					AND LOWER(PV.name) = LOWER(:provider_name)
+					AND UPPER(PC.name) = UPPER(:product_name)
+					AND UPPER(PC.description) = UPPER(:description)
+					AND UPPER(PC.manufacture) = UPPER(:manufacture)
+					AND UPPER(PV.name) = UPPER(:provider_name)
 				LIMIT 0, 1;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
@@ -278,21 +336,25 @@
 				$request = "SELECT PC.id FROM {$this->table} PC
 				INNER JOIN {$this->productProviderTable} PP
 					ON PC.id = PP.product_id
-				INNER JOIN {$this->providerTable} PV
-					ON PV.id = PP.provider_id
-				WHERE PC.is_enabled = true AND PV.is_enabled = true
-					AND LOWER(PC.name) = LOWER(:product_name)
-					AND LOWER(PC.description) = LOWER(:description)
-					AND LOWER(PC.manufacture) = LOWER(:manufacture)
-					AND LOWER(PV.name) = LOWER(:provider_name)
+				WHERE PC.is_enabled = true
+					AND UPPER(PC.name) = UPPER(:name)
+					AND
+					(
+						UPPER(PC.description) LIKE :description1
+						OR UPPER(:description2) LIKE CONCAT('%', UPPER(PC.description), '%')
+					)
+					AND UPPER(PC.manufacture) = UPPER(:manufacture)
 				LIMIT 0, 1;";
+
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
-				// Binding Parameter
-				$statement->bindParam(":product_name", $this->getName(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":provider_name", $this->getProvider(), PDO::PARAM_STR, 255);
+
+				// Binding Parameters
+				$statement->bindParam(':name', $this->getName(), PDO::PARAM_STR);
+				$statement->bindParam(':description1', $this->getDescription(), PDO::PARAM_STR);
+				$statement->bindParam(':description2', $this->getDescription(), PDO::PARAM_STR);
+				$statement->bindParam(':manufacture', $this->getManufacture(), PDO::PARAM_STR);;
+
 				// Execute Query
 				$statement->execute();
 
@@ -304,13 +366,15 @@
 
 					return true;
 				}
+
 				return false;
 			}
+
 
 			private function getProviderIdByName($providerName)
 			{
 				// Prepare the SQL statement to fetch the provider ID by name
-				$request = "SELECT id FROM {$this->providerTable} WHERE LOWER(name) = LOWER(:provider_name) LIMIT 0, 1;";
+				$request = "SELECT id FROM {$this->providerTable} WHERE UPPER(name) = UPPER(:provider_name) LIMIT 0, 1;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
@@ -330,7 +394,7 @@
 			private function getSubCategoryIdByName($subCategoryName)
 			{
 				// Prepare the SQL statement to fetch the provider ID by name
-				$request = "SELECT id FROM {$this->subCategoryTable} WHERE LOWER(name) = LOWER(:sub_category_name) LIMIT 0, 1;";
+				$request = "SELECT id FROM {$this->subCategoryTable} WHERE UPPER(name) = UPPER(:sub_category_name) LIMIT 0, 1;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
@@ -350,7 +414,7 @@
 			public function getTopProductsLimited($number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.name, P.description, P.manufacture, P.image, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				WHERE P.is_enabled = true
@@ -371,7 +435,7 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.image, P.description, P.manufacture, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, PP.image, P.description, P.manufacture, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
@@ -401,7 +465,7 @@
 				if (!empty($value))
 				{
 					// Prepare the SQL statement to fetch products limited
-					$request = "SELECT P.name, P.description, P.manufacture, P.image, MIN(PP.price) AS price FROM {$this->table} P
+					$request = "SELECT P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
 					INNER JOIN {$this->productProviderTable} PP
 						ON P.id = PP.product_id
 					WHERE P.is_enabled = true

@@ -109,7 +109,6 @@ CREATE TABLE IF NOT EXISTS `Product`
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`name` varchar(255) NOT NULL,
 	`description` varchar(255) DEFAULT NULL,
-	`image` varchar(255) DEFAULT NULL,
 	`manufacture` VARCHAR(255) DEFAULT NULL,
 	`viewed` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -138,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `Product_Provider`
 	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`price` decimal(10,3) DEFAULT NULL,
+	`image` varchar(255) DEFAULT NULL,
 	`link` varchar(255) DEFAULT NULL,
 	`product_id` int(11) NOT NULL,
 	`provider_id` int(11) NOT NULL,
@@ -183,7 +183,9 @@ TRUNCATE TABLE `Provider`;
 --
 
 INSERT INTO `provider` (`id`, `is_enabled`, `name`, `adresse`, `link`) VALUES
-(1, 1, 'Monoprix', 'Taieb Mhiri, Ez Zahra', 'https://courses.monoprix.tn/ezzahra/');
+(1, 1, 'Monoprix', 'Avenue Taieb Mhiri, Ezzahra', 'https://courses.monoprix.tn/ezzahra/'),
+(2, 1, 'Géant', 'Autoroute A1 - Km 2, Ben Arous', 'http://www.geantdrive.tn/azur-city/'),
+(3, 1, 'Carrefour', '', 'https://www.carrefour.tn/default/');
 
 -- --------------------------------------------------------
 

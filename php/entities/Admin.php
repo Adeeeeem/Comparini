@@ -86,7 +86,7 @@
 				// Prepare the SQL statement to fetch the admin by username and password
 				$request = "SELECT * FROM {$this->table}
 				WHERE is_enabled = true
-					AND LOWER(username) = LOWER(:username)
+					AND UPPER(username) = UPPER(:username)
 				LIMIT 0, 1;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
