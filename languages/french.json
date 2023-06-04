@@ -23,5 +23,8 @@
 	"pet_foods": "Aliments pour animaux",
 	"health_foods_supplements": "Aliments santé et suppléments",
 	"electronics": "Électroniques",
-	"top_products": "Meilleurs Produits"
+	"top_products": "Meilleurs Produits",
+	"from": "De",
+	"to": "à",
+	"save": "Économisez"
 }

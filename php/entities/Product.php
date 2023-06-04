@@ -9,6 +9,7 @@
 			/* Object Properties */
 			private $id;
 			private $isEnabled;
+			private $lastUpdatedDate;
 			private $name;
 			private $description;
 			private $image;
@@ -161,7 +162,7 @@
 				if ($this->productExists())
 				{
 					// Check if the Provider of this Product exists
-					if ($this->ProviderExists())
+					if ($this->providerExists())
 					{
 						// Check if the price is different
 						$existingPrice = $this->getExistingPrice();
@@ -183,9 +184,9 @@
 
 						// Prepare the SQL statement to insert a new product
 						$request = "INSERT INTO {$this->productProviderTable}
-						(price, image, link, product_id, provider_id, sub_category_id)
+						(last_updated_date, price, image, link, product_id, provider_id, sub_category_id)
 						VALUES
-						(:price, :image, :link, :product_id, :provider_id, :sub_category_id);";
+						(CURDATE(), :price, :image, :link, :product_id, :provider_id, :sub_category_id);";
 						// Preparing Statement
 						$statement = $this->connection->prepare($request);
 						// Binding Parameter
@@ -227,9 +228,9 @@
 
 					// Prepare the SQL statement to insert a new product
 					$request = "INSERT INTO {$this->productProviderTable}
-					(price, image, link, product_id, provider_id, sub_category_id)
+					(last_updated_date, price, image, link, product_id, provider_id, sub_category_id)
 					VALUES
-					(:price, :image, :link, :product_id, :provider_id, :sub_category_id);";
+					(CURDATE(), :price, :image, :link, :product_id, :provider_id, :sub_category_id);";
 					// Preparing Statement
 					$statement = $this->connection->prepare($request);
 					// Binding Parameter
@@ -248,7 +249,68 @@
 				return false;
 			}
 
-			private function ProviderExists()
+			private function productExists()
+			{
+				// Prepare the SQL statement
+				$request = "SELECT PC.id FROM {$this->table} PC
+				INNER JOIN {$this->productProviderTable} PP
+					ON PC.id = PP.product_id
+				WHERE PC.is_enabled = true
+					AND UPPER(PC.name) = UPPER(:name)
+					AND
+					(
+						UPPER(PC.description) LIKE :description1
+						OR UPPER(:description2) LIKE CONCAT('%', UPPER(PC.description), '%')
+					)
+					AND UPPER(PC.manufacture) = UPPER(:manufacture)
+					AND PP.sub_category_id = :sub_category_id
+				LIMIT 0, 1;";
+
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+
+				// Binding Parameters
+				$statement->bindParam(':name', $this->getName(), PDO::PARAM_STR);
+				$statement->bindParam(':description1', $this->getDescription(), PDO::PARAM_STR);
+				$statement->bindParam(':description2', $this->getDescription(), PDO::PARAM_STR);
+				$statement->bindParam(':manufacture', $this->getManufacture(), PDO::PARAM_STR);
+				$statement->bindParam(':sub_category_id', $this->getSubCategoryIdByName($this->getSubCategory()), PDO::PARAM_INT);
+
+				// Execute Query
+				$statement->execute();
+
+				if ($statement->rowCount() > 0)
+				{
+					// Retrieve the product ID
+					$row = $statement->fetch(PDO::FETCH_ASSOC);
+					$this->setId($row["id"]);
+
+					return true;
+				}
+
+				return false;
+			}
+
+			public function productExistsById($productId)
+			{
+				// Prepare the SQL statement
+				$request = "SELECT id FROM {$this->table}
+				WHERE id = :product_id
+				LIMIT 1;";
+
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+
+				// Binding Parameter
+				$statement->bindParam(":product_id", $productId, PDO::PARAM_INT);
+
+				// Execute Query
+				$statement->execute();
+
+				return $statement->rowCount() > 0;
+			}
+
+			private function providerExists()
 			{
 				// Prepare the SQL statement
 				$request = "SELECT provider_id FROM {$this->productProviderTable}
@@ -315,7 +377,7 @@
 
 				// Prepare the SQL statement to update the price
 				$request = "UPDATE {$this->productProviderTable}
-				SET price = :new_price
+				SET price = :new_price, last_updated_date = CURDATE()
 				WHERE product_id = :product_id
 				AND provider_id = :provider_id;";
 				// Preparing Statement
@@ -329,47 +391,6 @@
 
 				return $result;
 			}
-
-			private function productExists()
-			{
-				// Prepare the SQL statement
-				$request = "SELECT PC.id FROM {$this->table} PC
-				INNER JOIN {$this->productProviderTable} PP
-					ON PC.id = PP.product_id
-				WHERE PC.is_enabled = true
-					AND UPPER(PC.name) = UPPER(:name)
-					AND
-					(
-						UPPER(PC.description) LIKE :description1
-						OR UPPER(:description2) LIKE CONCAT('%', UPPER(PC.description), '%')
-					)
-					AND UPPER(PC.manufacture) = UPPER(:manufacture)
-				LIMIT 0, 1;";
-
-				// Preparing Statement
-				$statement = $this->connection->prepare($request);
-
-				// Binding Parameters
-				$statement->bindParam(':name', $this->getName(), PDO::PARAM_STR);
-				$statement->bindParam(':description1', $this->getDescription(), PDO::PARAM_STR);
-				$statement->bindParam(':description2', $this->getDescription(), PDO::PARAM_STR);
-				$statement->bindParam(':manufacture', $this->getManufacture(), PDO::PARAM_STR);;
-
-				// Execute Query
-				$statement->execute();
-
-				if ($statement->rowCount() > 0)
-				{
-					// Retrieve the product ID
-					$row = $statement->fetch(PDO::FETCH_ASSOC);
-					$this->setId($row["id"]);
-
-					return true;
-				}
-
-				return false;
-			}
-
 
 			private function getProviderIdByName($providerName)
 			{
@@ -414,7 +435,7 @@
 			public function getTopProductsLimited($number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				WHERE P.is_enabled = true
@@ -465,7 +486,7 @@
 				if (!empty($value))
 				{
 					// Prepare the SQL statement to fetch products limited
-					$request = "SELECT P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
+					$request = "SELECT P.id, P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
 					INNER JOIN {$this->productProviderTable} PP
 						ON P.id = PP.product_id
 					WHERE P.is_enabled = true
@@ -485,6 +506,32 @@
 				}
 
 				return this->getTopProductsLimited(24);
+			}
+
+			public function getProductDetails($product_id)
+			{
+				// Prepare the SQL statement to fetch product details
+				$request = "SELECT PC.id AS product_id, PC.name AS product_name, PC.description, PC.manufacture, PP.last_updated_date, PP.price, PP.image, PP.link AS product_link, PV.name AS provider_name, PV.adresse, PV.link AS provider_link
+				FROM {$this->table} PC
+				INNER JOIN {$this->productProviderTable} PP
+					ON PC.id = PP.product_id
+				INNER JOIN {$this->providerTable} PV
+					ON PP.provider_id = PV.id
+				WHERE PC.is_enabled = true
+					AND PV.is_enabled = true
+					AND PP.is_enabled = true
+					AND PC.id = :product_id
+				ORDER BY PP.price ASC;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":product_id", $product_id, PDO::PARAM_INT);
+				// Execute Query
+				$statement->execute();
+				/* Retrieve Products */
+				$details = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+				return $details;
 			}
 		}
 	}
