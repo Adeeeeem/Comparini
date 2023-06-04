@@ -1,0 +1,16 @@
+div.uk-card{background-color: var(--nav-color) !important;}
+div.uk-card h3.uk-card-title{color: var(--text-color);}
+div.uk-card p{color: #999!important;}
+#product_details{margin: 50px 150px;}
+#product_details div.uk-card div.uk-card-media-left{width: 25% !important;}
+#product_details div.uk-card div.details-body{width: 70% !important;}
+#product_details div.uk-card h4{margin: 10px 0; letter-spacing: 1px;}
+#product_details div.uk-card h3.uk-card-title{margin: 10px 0; font-family: "Barlow" !important; letter-spacing: 2px;}
+#product_details div.uk-card p{letter-spacing: 1px;}
+#product_details div.uk-card h5{color: var(--text-color);}
+#product_details div.uk-card h5 span.price{font-weight: bold;}
+#product_details div.uk-card h5 span.price.economy{color: #CC1C39;}
+#product_comparison{margin: 50px 250px;}
+#product_comparison small.uk-text-muted{color: #039C0F !important;}
+#product_comparison .uk-table-hover tbody tr:hover, #product_comparison .uk-table-hover > tr:hover{background-color: #E6F0F8;}
+#product_comparison img{width: 65px; height: 65px;}

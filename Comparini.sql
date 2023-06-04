@@ -136,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `Product_Provider`
 (
 	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
+	`last_updated_date` date DEFAULT NULL,
 	`price` decimal(10,3) DEFAULT NULL,
 	`image` varchar(255) DEFAULT NULL,
 	`link` varchar(255) DEFAULT NULL,
