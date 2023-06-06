@@ -108,6 +108,9 @@ CREATE TABLE IF NOT EXISTS `Product`
 	`id` int(11) NOT NULL,
 	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
 	`name` varchar(255) NOT NULL,
+	`quantity` varchar(50) DEFAULT NULL,
+	`unit` varchar(50) DEFAULT NULL,
+	`flavor` varchar(255) DEFAULT NULL,
 	`description` varchar(255) DEFAULT NULL,
 	`manufacture` VARCHAR(255) DEFAULT NULL,
 	`viewed` int(11) NOT NULL DEFAULT 1

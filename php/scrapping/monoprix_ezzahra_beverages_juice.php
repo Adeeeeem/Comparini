@@ -75,6 +75,13 @@
 						return $number . ' ' . $unit . ' ' . $flavor;
 					}, $description));
 
+					$matches = [];
+					preg_match('/(?i)(\d+(?:\.\d+)?)\s*([a-z]+)(.*)/', $description, $matches);
+
+					$quantity = isset($matches[1]) ? $matches[1] : "N/A";
+					$unit = isset($matches[2]) ? strtoupper($matches[2]) : "N/A";
+					$flavor = isset($matches[3]) ? ucwords(trim($matches[3], " -")) : "N/A";
+
 					$linkElement = $xpath->query(".//div[@class='h3 product-title']/a", $productElement)->item(0);
 					$link = $linkElement !== null ? trim($linkElement->getAttribute("href")) : "N/A";
 
@@ -85,7 +92,9 @@
 					$product->setManufacture($manufacture);
 					$product->setPrice($price);
 					$product->setImage($image);
-					$product->setDescription($description);
+					$product->setQuantity($quantity);
+					$product->setUnit($unit);
+					$product->setFlavor($flavor);
 					$product->setLink($link);
 					$product->setCategory("beverages");
 					$product->setSubCategory("juice");

@@ -11,7 +11,9 @@
 			private $isEnabled;
 			private $lastUpdatedDate;
 			private $name;
-			private $description;
+			private $quantity;
+			private $unit;
+			private $flavor;
 			private $image;
 			private $manufacture;
 			private $price;
@@ -66,14 +68,34 @@
 				$this->name = $name;
 			}
 
-			public function getDescription()
+			public function getQuantity()
 			{
-				return $this->description;
+				return $this->quantity;
 			}
 
-			public function setDescription($description)
+			public function setQuantity($quantity)
 			{
-				$this->description = $description;
+				$this->quantity = $quantity;
+			}
+
+			public function getUnit()
+			{
+				return $this->unit;
+			}
+
+			public function setUnit($unit)
+			{
+				$this->unit = $unit;
+			}
+
+			public function getFlavor()
+			{
+				return $this->flavor;
+			}
+
+			public function setFlavor($flavor)
+			{
+				$this->flavor = $flavor;
 			}
 
 			public function getImage()
@@ -205,14 +227,16 @@
 
 				// Prepare the SQL statement to insert a new product
 				$request = "INSERT INTO {$this->table}
-				(name, description, manufacture)
+				(name, quantity, unit, flavor, manufacture)
 				VALUES
-				(:name, :description, :manufacture);";
+				(:name, :quantity, :unit, :flavor, :manufacture);";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
 				$statement->bindParam(":name", $this->getName(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":quantity", $this->getQuantity(), PDO::PARAM_STR, 50);
+				$statement->bindParam(":unit", $this->getUnit(), PDO::PARAM_STR, 50);
+				$statement->bindParam(":flavor", $this->getFlavor(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
 				// Execute Query
 				$result = $statement->execute();
@@ -257,11 +281,9 @@
 					ON PC.id = PP.product_id
 				WHERE PC.is_enabled = true
 					AND UPPER(PC.name) = UPPER(:name)
-					AND
-					(
-						UPPER(PC.description) LIKE :description1
-						OR UPPER(:description2) LIKE CONCAT('%', UPPER(PC.description), '%')
-					)
+					AND UPPER(PC.quantity) = UPPER(:quantity)
+					AND UPPER(PC.unit) = UPPER(:unit)
+					AND UPPER(PC.flavor) = UPPER(:flavor)
 					AND UPPER(PC.manufacture) = UPPER(:manufacture)
 					AND PP.sub_category_id = :sub_category_id
 				LIMIT 0, 1;";
@@ -270,10 +292,11 @@
 				$statement = $this->connection->prepare($request);
 
 				// Binding Parameters
-				$statement->bindParam(':name', $this->getName(), PDO::PARAM_STR);
-				$statement->bindParam(':description1', $this->getDescription(), PDO::PARAM_STR);
-				$statement->bindParam(':description2', $this->getDescription(), PDO::PARAM_STR);
-				$statement->bindParam(':manufacture', $this->getManufacture(), PDO::PARAM_STR);
+				$statement->bindParam(':name', $this->getName(), PDO::PARAM_STR, 255);
+				$statement->bindParam(':quantity', $this->getQuantity(), PDO::PARAM_STR, 50);
+				$statement->bindParam(':unit', $this->getUnit(), PDO::PARAM_STR, 50);
+				$statement->bindParam(':flavor', $this->getFlavor(), PDO::PARAM_STR, 255);
+				$statement->bindParam(':manufacture', $this->getManufacture(), PDO::PARAM_STR, 255);
 				$statement->bindParam(':sub_category_id', $this->getSubCategoryIdByName($this->getSubCategory()), PDO::PARAM_INT);
 
 				// Execute Query
@@ -346,7 +369,9 @@
 					ON PV.id = PP.provider_id
 				WHERE PC.is_enabled = true AND PV.is_enabled = true
 					AND UPPER(PC.name) = UPPER(:product_name)
-					AND UPPER(PC.description) = UPPER(:description)
+					AND UPPER(PC.quantity) = UPPER(:quantity)
+					AND UPPER(PC.unit) = UPPER(:unit)
+					AND UPPER(PC.flavor) = UPPER(:flavor)
 					AND UPPER(PC.manufacture) = UPPER(:manufacture)
 					AND UPPER(PV.name) = UPPER(:provider_name)
 				LIMIT 0, 1;";
@@ -354,7 +379,9 @@
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
 				$statement->bindParam(":product_name", $this->getName(), PDO::PARAM_STR, 255);
-				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":quantity", $this->getQuantity(), PDO::PARAM_STR, 50);
+				$statement->bindParam(":unit", $this->getUnit(), PDO::PARAM_STR, 50);
+				$statement->bindParam(":flavor", $this->getFlavor(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":provider_name", $this->getProvider(), PDO::PARAM_STR, 255);
 				// Execute Query
@@ -435,11 +462,11 @@
 			public function getTopProductsLimited($number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				WHERE P.is_enabled = true
-				GROUP BY P.name, P.description, P.manufacture
+				GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
 				ORDER BY viewed DESC LIMIT :number;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
@@ -456,7 +483,7 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, PP.image, P.description, P.manufacture, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, PP.image, P.quantity, P.unit, P.flavor, P.manufacture, MIN(PP.price) AS price FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
@@ -465,7 +492,7 @@
 					ON SC.category_id = C.id
 				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true
 					AND C.label = :category
-				GROUP BY P.name, P.description, P.manufacture
+				GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
 				ORDER BY P.viewed DESC
 				LIMIT :number;";
 				// Preparing Statement
@@ -486,14 +513,16 @@
 				if (!empty($value))
 				{
 					// Prepare the SQL statement to fetch products limited
-					$request = "SELECT P.id, P.name, P.description, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
+					$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
 					INNER JOIN {$this->productProviderTable} PP
 						ON P.id = PP.product_id
 					WHERE P.is_enabled = true
 					AND (UPPER(P.name) LIKE '%" . strtoupper($value) . "%'
-					OR UPPER(P.description) LIKE '%" . strtoupper($value) . "%'
+					OR UPPER(P.quantity) LIKE '%" . strtoupper($value) . "%'
+					OR UPPER(P.unit) LIKE '%" . strtoupper($value) . "%'
+					OR UPPER(P.flavor) LIKE '%" . strtoupper($value) . "%'
 					OR UPPER(P.manufacture) LIKE '%" . strtoupper($value) . "%')
-					GROUP BY P.name, P.description, P.manufacture
+					GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
 					ORDER BY viewed DESC;";
 					// Preparing Statement
 					$statement = $this->connection->prepare($request);
@@ -511,7 +540,7 @@
 			public function getProductDetails($product_id)
 			{
 				// Prepare the SQL statement to fetch product details
-				$request = "SELECT PC.id AS product_id, PC.name AS product_name, PC.description, PC.manufacture, PP.last_updated_date, PP.price, PP.image, PP.link AS product_link, PV.name AS provider_name, PV.adresse, PV.link AS provider_link
+				$request = "SELECT PC.id AS product_id, PC.name AS product_name, PC.quantity, PC.unit, PC.flavor, PC.manufacture, PP.last_updated_date, PP.price, PP.image, PP.link AS product_link, PV.name AS provider_name, PV.adresse, PV.link AS provider_link
 				FROM {$this->table} PC
 				INNER JOIN {$this->productProviderTable} PP
 					ON PC.id = PP.product_id
