@@ -110,9 +110,20 @@ $(function()
 /*==================================================
 			Search for a Product
 ==================================================*/
-	$("div#categories_filter div#search input").keyup(function()
+	$("div#categories_filter div#search form.uk-search").submit(function(e)
+	{
+		e.preventDefault();
+	});
+
+	$("div#categories_filter div#search input").keydown(function(e)
 	{
 		var search_value = $(this).val();
+
+		if (e.keyCode === 13 || (e.keyCode === 8 && search_value === ''))
+		{
+			e.preventDefault();
+			return false;
+		}
 
 		$.ajax
 		({

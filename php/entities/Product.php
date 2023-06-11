@@ -280,11 +280,23 @@
 				INNER JOIN {$this->productProviderTable} PP
 					ON PC.id = PP.product_id
 				WHERE PC.is_enabled = true
-					AND UPPER(PC.name) = UPPER(:name)
+					AND
+					(
+						UPPER(PC.name) LIKE CONCAT('%', UPPER(:name1), '%')
+						OR UPPER(:name2) LIKE CONCAT('%', UPPER(PC.name), '%')
+					)
 					AND UPPER(PC.quantity) = UPPER(:quantity)
 					AND UPPER(PC.unit) = UPPER(:unit)
-					AND UPPER(PC.flavor) = UPPER(:flavor)
-					AND UPPER(PC.manufacture) = UPPER(:manufacture)
+					AND
+					(
+						UPPER(PC.flavor) LIKE CONCAT('%', UPPER(:flavor1), '%')
+						OR UPPER(:flavor2) LIKE CONCAT('%', UPPER(PC.flavor), '%')
+					)
+					AND
+					(
+						UPPER(PC.manufacture) LIKE CONCAT('%', UPPER(:manufacture1), '%')
+						OR UPPER(:manufacture2) LIKE CONCAT('%', UPPER(PC.manufacture), '%')
+					)
 					AND PP.sub_category_id = :sub_category_id
 				LIMIT 0, 1;";
 
@@ -292,12 +304,15 @@
 				$statement = $this->connection->prepare($request);
 
 				// Binding Parameters
-				$statement->bindParam(':name', $this->getName(), PDO::PARAM_STR, 255);
-				$statement->bindParam(':quantity', $this->getQuantity(), PDO::PARAM_STR, 50);
-				$statement->bindParam(':unit', $this->getUnit(), PDO::PARAM_STR, 50);
-				$statement->bindParam(':flavor', $this->getFlavor(), PDO::PARAM_STR, 255);
-				$statement->bindParam(':manufacture', $this->getManufacture(), PDO::PARAM_STR, 255);
-				$statement->bindParam(':sub_category_id', $this->getSubCategoryIdByName($this->getSubCategory()), PDO::PARAM_INT);
+				$statement->bindParam(":name1", $this->getName(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":name2", $this->getName(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":quantity", $this->getQuantity(), PDO::PARAM_STR, 50);
+				$statement->bindParam(":unit", $this->getUnit(), PDO::PARAM_STR, 50);
+				$statement->bindParam(":flavor1", $this->getFlavor(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":flavor2", $this->getFlavor(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":manufacture1", $this->getManufacture(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":manufacture2", $this->getManufacture(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":sub_category_id", $this->getSubCategoryIdByName($this->getSubCategory()), PDO::PARAM_INT);
 
 				// Execute Query
 				$statement->execute();

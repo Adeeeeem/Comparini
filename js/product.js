@@ -26,7 +26,7 @@ $(window).on("load", function()
 
 				$.each(response.products, function(index, product)
 				{
-					var categoryHTML = '<tr><td><img class="uk-preserve-width uk-border-circle" src="img/providers/' + product.provider_name.toLowerCase() +'.jpg" width="100" height="100" alt="' + product.provider_name + '"></td><td>' + product.manufacture + '</td><td class="uk-text-left"><a href="' + product.product_link + '">' + product.product_name + ' - ' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</a></td><td>' + product.price + ' DT<p><small class="uk-text-muted">' + product.last_updated_date + '</small></p></td><td><a href="' + product.provider_link + '">' + product.provider_name + '<br>' + product.adresse + '</a></td></tr>';
+					var categoryHTML = '<tr><td><img class="uk-preserve-width uk-border-circle" src="img/providers/' + product.provider_name.toLowerCase() +'.jpg" width="100" height="100" alt="' + product.provider_name + '"></td><td>' + product.manufacture + '</td><td class="uk-text-left"><a href="' + product.product_link + '" target="_blank">' + product.product_name + ' ' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</a></td><td>' + product.price + ' DT<p><small class="uk-text-muted">' + product.last_updated_date + '</small></p></td><td><a href="' + product.provider_link + '" target="_blank">' + product.provider_name + '<br>' + product.adresse + '</a></td></tr>';
 					$("div#product_comparison table tbody").append(categoryHTML);
 				});
 			}
