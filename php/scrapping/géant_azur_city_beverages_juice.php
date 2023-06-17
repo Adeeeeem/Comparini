@@ -123,8 +123,27 @@
 								$nameElement = $productXPath->query("//h1[@class='h1 product-head1']")->item(0);
 								$name = $nameElement !== null ? trim($nameElement->textContent) : null;
 
+								$name = strtolower($name);
+								$name = preg_replace_callback("/(?<=\s)\w/u", function($match)
+								{
+									return strtoupper($match[0]);
+								}, $name);
+								$name = preg_replace_callback("/\b\w/u", function($match)
+								{
+									return strtoupper($match[0]);
+								}, $name);
+
 								$manufactureElement = $productXPath->query("//p[@class='manufacturer_product']/a")->item(0);
 								$manufacture = $manufactureElement !== null ? trim($manufactureElement->textContent) : null;
+
+								if ($manufacture == "DÉLICE DE FRUITS" || $manufacture == "DELICE")
+									$manufacture = "DÉLICE";
+
+								if ($manufacture == "AL MARAI")
+									$manufacture = "ALMARAI";
+
+								if ($manufacture == "BNINO STIL" || $manufacture == "ENERGY STIL")
+									$manufacture = "STIL";
 
 								$priceElement = $productXPath->query("//div[@class='current-price']/span[@itemprop='price']");
 								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->item(0)->textContent)) : null;
@@ -150,6 +169,11 @@
 								$flavor = trim(str_replace("  ", " ", $flavor));
 
 								$flavor = strtolower($flavor);
+
+								$flavorWords = explode(" ", $flavor);
+								sort($flavorWords);
+								$flavor = implode(" ", $flavorWords);
+
 								$flavor = preg_replace_callback("/(?<=\s)\w/u", function($match)
 								{
 									return strtoupper($match[0]);
@@ -159,8 +183,26 @@
 									return strtoupper($match[0]);
 								}, $flavor);
 
+								if ($name == "Boisson Instantannée")
+									$name = "Boisson Instantanée";
+
+								if ($name == "Nectar" && $manufacture == "LA FRUITIERE" && $quantity == "250" && $unit == "ML")
+									$name = "Boisson Au Jus";
+
+								if  ($name == "Nectar" && $manufacture == "OH" && $quantity == "1" && $unit == "L")
+									$name = "Boisson Au Jus";
+
+								if ($name == "Nectar" && $manufacture == "OH" && $quantity == "25" && $unit == "CL")
+									$name = "Boisson Au Jus";
+
 								if ($flavor == "Multi Vitaminée")
 									$flavor = "Multivitaminé";
+
+								if (strpos($flavor , "Bnino ") !== false)
+									$flavor  = trim(str_replace("Bnino ", "", $flavor ));
+
+								if ($flavor == "Cocktail" && $name == "Boisson Au Jus" && $manufacture == "TROPICO" && $quantity == "20" && $unit == "CL")
+									$flavor = "Cocktail Fruits";
 
 								/* Get Product Class */
 								$product = new Product($connection);

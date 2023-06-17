@@ -280,6 +280,7 @@
 				INNER JOIN {$this->productProviderTable} PP
 					ON PC.id = PP.product_id
 				WHERE PC.is_enabled = true
+					AND PP.is_enabled = true
 					AND
 					(
 						UPPER(PC.name) LIKE CONCAT('%', UPPER(:name1), '%')

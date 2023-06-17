@@ -107,8 +107,21 @@
 								$nameElement = $productXPath->query("//h1[contains(@class, 'productpage_title')]")->item(0);
 								$name = $nameElement !== null ? trim($nameElement->textContent) : null;
 
+								$name = strtolower($name);
+								$name = preg_replace_callback("/(?<=\s)\w/u", function($match)
+								{
+									return strtoupper($match[0]);
+								}, $name);
+								$name = preg_replace_callback("/\b\w/u", function($match)
+								{
+									return strtoupper($match[0]);
+								}, $name);
+
 								$manufactureElement = $productXPath->query("//div[contains(@class, 'marque')]/span")->item(0);
 								$manufacture = $manufactureElement !== null ? trim($manufactureElement->textContent) : null;
+
+								if ($manufacture == "DÉLICE DE FRUITS" || $manufacture == "DELICE")
+									$manufacture = "DÉLICE";
 
 								$priceElement = $productXPath->query("//div[contains(@class, 'current-price')]/span[@itemprop='price']")->item(0);
 								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->textContent)) : null;
@@ -131,6 +144,11 @@
 								$flavor = trim(str_replace("  ", " ", $flavor));
 								
 								$flavor = strtolower($flavor);
+
+								$flavorWords = explode(" ", $flavor);
+								sort($flavorWords);
+								$flavor = implode(" ", $flavorWords);
+
 								$flavor = preg_replace_callback("/(?<=\s)\w/u", function($match)
 								{
 									return strtoupper($match[0]);
@@ -139,6 +157,15 @@
 								{
 									return strtoupper($match[0]);
 								}, $flavor);
+
+								if ($name == "Nectar" && $manufacture == "LA FRUITIERE" && $quantity == "250" && $unit == "ML")
+									$name = "Boisson Au Jus";
+
+								if  ($name == "Nectar" && $manufacture == "OH" && $quantity == "1" && $unit == "L")
+									$name = "Boisson Au Jus";
+
+								if ($name == "Nectar" && $manufacture == "OH" && $quantity == "25" && $unit == "CL")
+									$name = "Boisson Au Jus";
 
 								/* Get Product Class */
 								$product = new Product($connection);
