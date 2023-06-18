@@ -212,14 +212,11 @@
 						// Retrieve the provider ID based on the provider name
 						$providerId = $this->getProviderIdByName($this->getProvider());
 
-						// Retrieve the subcategory ID based on the subcategory name
-						$subCategoryId = $this->getSubCategoryIdByName($this->getSubCategory());
-
 						// Prepare the SQL statement to insert a new product
 						$request = "INSERT INTO {$this->productProviderTable}
-						(last_updated_date, price, image, link, product_id, provider_id, sub_category_id)
+						(last_updated_date, price, image, link, product_id, provider_id)
 						VALUES
-						(CURDATE(), :price, :image, :link, :product_id, :provider_id, :sub_category_id);";
+						(CURDATE(), :price, :image, :link, :product_id, :provider_id);";
 						// Preparing Statement
 						$statement = $this->connection->prepare($request);
 						// Binding Parameter
@@ -228,7 +225,6 @@
 						$statement->bindParam(":link", $this->getLink(), PDO::PARAM_STR, 255);
 						$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
 						$statement->bindParam(":provider_id", $providerId, PDO::PARAM_INT);
-						$statement->bindParam(":sub_category_id", $subCategoryId, PDO::PARAM_INT);
 						// Execute Query
 						$result = $statement->execute();
 
@@ -236,11 +232,14 @@
 					}
 				}
 
+				// Retrieve the subcategory ID based on the subcategory name
+				$subCategoryId = $this->getSubCategoryIdByName($this->getSubCategory());
+
 				// Prepare the SQL statement to insert a new product
 				$request = "INSERT INTO {$this->table}
-				(name, quantity, unit, flavor, description, manufacture)
+				(name, quantity, unit, flavor, description, manufacture, sub_category_id)
 				VALUES
-				(:name, :quantity, :unit, :flavor, :description, :manufacture);";
+				(:name, :quantity, :unit, :flavor, :description, :manufacture, :sub_category_id);";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
@@ -250,6 +249,7 @@
 				$statement->bindParam(":flavor", $this->getFlavor(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":sub_category_id", $subCategoryId, PDO::PARAM_INT);
 				// Execute Query
 				$result = $statement->execute();
 
@@ -259,14 +259,12 @@
 					$this->setId($this->connection->lastInsertId());
 					// Retrieve the provider ID based on the provider name
 					$providerId = $this->getProviderIdByName($this->getProvider());
-					// Retrieve the subcategory ID based on the subcategory name
-					$subCategoryId = $this->getSubCategoryIdByName($this->getSubCategory());
 
 					// Prepare the SQL statement to insert a new product
 					$request = "INSERT INTO {$this->productProviderTable}
-					(last_updated_date, price, image, link, product_id, provider_id, sub_category_id)
+					(last_updated_date, price, image, link, product_id, provider_id)
 					VALUES
-					(CURDATE(), :price, :image, :link, :product_id, :provider_id, :sub_category_id);";
+					(CURDATE(), :price, :image, :link, :product_id, :provider_id);";
 					// Preparing Statement
 					$statement = $this->connection->prepare($request);
 					// Binding Parameter
@@ -275,7 +273,6 @@
 					$statement->bindParam(":link", $this->getLink(), PDO::PARAM_STR, 255);
 					$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
 					$statement->bindParam(":provider_id", $providerId, PDO::PARAM_INT);
-					$statement->bindParam(":sub_category_id", $subCategoryId, PDO::PARAM_INT);
 					// Execute Query
 					$result = $statement->execute();
 
@@ -288,29 +285,26 @@
 			private function productExists()
 			{
 				// Prepare the SQL statement
-				$request = "SELECT PC.id FROM {$this->table} PC
-				INNER JOIN {$this->productProviderTable} PP
-					ON PC.id = PP.product_id
-				WHERE PC.is_enabled = true
-					AND PP.is_enabled = true
+				$request = "SELECT P.id FROM {$this->table} P
+				WHERE P.is_enabled = true
 					AND
 					(
-						UPPER(PC.name) LIKE CONCAT('%', UPPER(:name1), '%')
-						OR UPPER(:name2) LIKE CONCAT('%', UPPER(PC.name), '%')
+						UPPER(P.name) LIKE CONCAT('%', UPPER(:name1), '%')
+						OR UPPER(:name2) LIKE CONCAT('%', UPPER(P.name), '%')
 					)
-					AND UPPER(PC.quantity) = UPPER(:quantity)
-					AND UPPER(PC.unit) = UPPER(:unit)
+					AND UPPER(P.quantity) = UPPER(:quantity)
+					AND UPPER(P.unit) = UPPER(:unit)
 					AND
 					(
-						UPPER(PC.flavor) LIKE CONCAT('%', UPPER(:flavor1), '%')
-						OR UPPER(:flavor2) LIKE CONCAT('%', UPPER(PC.flavor), '%')
+						UPPER(P.flavor) LIKE CONCAT('%', UPPER(:flavor1), '%')
+						OR UPPER(:flavor2) LIKE CONCAT('%', UPPER(P.flavor), '%')
 					)
 					AND
 					(
-						UPPER(PC.manufacture) LIKE CONCAT('%', UPPER(:manufacture1), '%')
-						OR UPPER(:manufacture2) LIKE CONCAT('%', UPPER(PC.manufacture), '%')
+						UPPER(P.manufacture) LIKE CONCAT('%', UPPER(:manufacture1), '%')
+						OR UPPER(:manufacture2) LIKE CONCAT('%', UPPER(P.manufacture), '%')
 					)
-					AND PP.sub_category_id = :sub_category_id
+					AND P.sub_category_id = :sub_category_id
 				LIMIT 0, 1;";
 
 				// Preparing Statement
@@ -401,6 +395,7 @@
 					AND UPPER(PC.unit) = UPPER(:unit)
 					AND UPPER(PC.flavor) = UPPER(:flavor)
 					AND UPPER(PC.manufacture) = UPPER(:manufacture)
+					AND PC.sub_category_id = :sub_category_id
 					AND UPPER(PV.name) = UPPER(:provider_name)
 				LIMIT 0, 1;";
 				// Preparing Statement
@@ -411,6 +406,7 @@
 				$statement->bindParam(":unit", $this->getUnit(), PDO::PARAM_STR, 50);
 				$statement->bindParam(":flavor", $this->getFlavor(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":sub_category_id", $this->getSubCategoryIdByName($this->getSubCategory()), PDO::PARAM_INT);
 				$statement->bindParam(":provider_name", $this->getProvider(), PDO::PARAM_STR, 255);
 				// Execute Query
 				$statement->execute();
@@ -515,7 +511,7 @@
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
-					ON PP.sub_category_id = SC.id
+					ON P.sub_category_id = SC.id
 				INNER JOIN {$this->categoryTable} C
 					ON SC.category_id = C.id
 				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true
