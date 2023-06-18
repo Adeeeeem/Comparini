@@ -204,6 +204,17 @@
 								if ($flavor == "Cocktail" && $name == "Boisson Au Jus" && $manufacture == "TROPICO" && $quantity == "20" && $unit == "CL")
 									$flavor = "Cocktail Fruits";
 
+								$description = null;
+
+								switch ($name)
+								{
+									case "Nectar": $description = "Nectar"; break;
+									case "Boisson Instantanée": $description = "Boisson Instantanée"; break;
+									case "Boisson Concentrée": $description = "Boisson Concentrée"; break;
+									case "Sirop": $description = "Sirop"; break;
+									default: if (strpos($name, "Jus") !== false) $description = "Jus"; break;
+								}
+
 								/* Get Product Class */
 								$product = new Product($connection);
 
@@ -214,6 +225,7 @@
 								$product->setQuantity($quantity);
 								$product->setUnit($unit);
 								$product->setFlavor($flavor);
+								$product->setDescription($description);
 								$product->setLink($link);
 								$product->setCategory("beverages");
 								$product->setSubCategory("juice");

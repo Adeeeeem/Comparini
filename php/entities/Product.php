@@ -14,6 +14,7 @@
 			private $quantity;
 			private $unit;
 			private $flavor;
+			private $description;
 			private $image;
 			private $manufacture;
 			private $price;
@@ -96,6 +97,16 @@
 			public function setFlavor($flavor)
 			{
 				$this->flavor = $flavor;
+			}
+
+			public function getDescription()
+			{
+				return $this->description;
+			}
+
+			public function setDescription($description)
+			{
+				$this->description = $description;
 			}
 
 			public function getImage()
@@ -227,9 +238,9 @@
 
 				// Prepare the SQL statement to insert a new product
 				$request = "INSERT INTO {$this->table}
-				(name, quantity, unit, flavor, manufacture)
+				(name, quantity, unit, flavor, description, manufacture)
 				VALUES
-				(:name, :quantity, :unit, :flavor, :manufacture);";
+				(:name, :quantity, :unit, :flavor, :description, :manufacture);";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
@@ -237,6 +248,7 @@
 				$statement->bindParam(":quantity", $this->getQuantity(), PDO::PARAM_STR, 50);
 				$statement->bindParam(":unit", $this->getUnit(), PDO::PARAM_STR, 50);
 				$statement->bindParam(":flavor", $this->getFlavor(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":description", $this->getDescription(), PDO::PARAM_STR, 255);
 				$statement->bindParam(":manufacture", $this->getManufacture(), PDO::PARAM_STR, 255);
 				// Execute Query
 				$result = $statement->execute();

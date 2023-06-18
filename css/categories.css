@@ -1,0 +1,13 @@
+/*==================================================
+				Menu
+==================================================*/
+/* Menu */
+#menu{position: fixed; left: 0; top: 80px; bottom: 0; overflow-y: auto; width: 250px; background-color: var(--nav-color) !important;}
+#menu button{background-color: var(--body-color); font-weight: bold; color: var(--secondary-color); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-top: 7px;}
+#menu button:hover, #menu button:focus, #menu button.active{color: var(--blue-color);}
+#menu button img{width: 25px; height: 25px; margin-right: 25px; margin-top: -5px;}
+#groups-btn img{width: 33px !important; height: 33px !important; margin-left: -3px; margin-right: 20px !important;}
+#logout-btn img{margin-left: 2px; margin-right: 23px !important;}
+#menu ul.configuration-btn{padding-top: 5px;}
+#configuration-btn{padding-top: 0; height: 38px;}
+#menu div.uk-accordion-content{margin-top: 0; padding-left: 35px;}

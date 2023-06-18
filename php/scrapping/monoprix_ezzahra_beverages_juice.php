@@ -123,6 +123,9 @@
 								if ($manufacture == "DÉLICE DE FRUITS" || $manufacture == "DELICE")
 									$manufacture = "DÉLICE";
 
+								if ($manufacture == "BNINO STIL" || $manufacture == "ENERGY STIL")
+									$manufacture = "STIL";
+
 								$priceElement = $productXPath->query("//div[contains(@class, 'current-price')]/span[@itemprop='price']")->item(0);
 								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->textContent)) : null;
 
@@ -167,6 +170,17 @@
 								if ($name == "Nectar" && $manufacture == "OH" && $quantity == "25" && $unit == "CL")
 									$name = "Boisson Au Jus";
 
+								$description = null;
+
+								switch ($name)
+								{
+									case "Nectar": $description = "Nectar"; break;
+									case "Boisson Instantanée": $description = "Boisson Instantanée"; break;
+									case "Boisson Concentrée": $description = "Boisson Concentrée"; break;
+									case "Sirop": $description = "Sirop"; break;
+									default: if (strpos($name, "Jus") !== false) $description = "Jus"; break;
+								}
+
 								/* Get Product Class */
 								$product = new Product($connection);
 
@@ -177,6 +191,7 @@
 								$product->setQuantity($quantity);
 								$product->setUnit($unit);
 								$product->setFlavor($flavor);
+								$product->setDescription($description);
 								$product->setLink($link);
 								$product->setCategory("beverages");
 								$product->setSubCategory("juice");
