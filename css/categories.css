@@ -4,4 +4,5 @@
 #content{bottom: 0; overflow-y: auto; width: 100%; padding: 25px 200px;}
 nav#categories_nav{padding: 0 30px 0 30px; background-color: var(--nav-color) !important;}
 nav#categories_nav li{margin-right: 25px; margin-left: 25px;}
-nav#categories_nav .uk-navbar-nav > li > a{color: var(--secondary-color) !important;}
+nav#categories_nav ul.uk-navbar-nav > li > a{color: var(--secondary-color) !important;}
+nav#categories_nav ul.uk-navbar-nav > li > a, nav#categories_nav ul.uk-navbar-nav li ul, nav#categories_nav ul.uk-navbar-nav li ul li{cursor: pointer;}

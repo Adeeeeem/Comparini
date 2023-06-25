@@ -47,11 +47,11 @@
 					</div>
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
-							<li><a href="./" onclick="event.preventDefault();"><span language-tag="home">Home</span></a></li>
-							<li><a href="./categories.html"><span language-tag="categories">Categories</span></a></li>
-							<li><a href="./contact.html"><span language-tag="contact">Contact</span></a></li>
+							<li><a href="./" onclick="event.preventDefault();"><span data-language-tag="home">Home</span></a></li>
+							<li><a href="./categories.html"><span data-language-tag="categories">Categories</span></a></li>
+							<li><a href="./contact.html"><span data-language-tag="contact">Contact</span></a></li>
 							<li>
-								<a href="#"><span language-tag="languages">Languages</span> <span uk-navbar-parent-icon></span></a>
+								<a href="#"><span data-language-tag="languages">Languages</span> <span uk-navbar-parent-icon></span></a>
 								<div class="uk-navbar-dropdown">
 									<ul class="uk-nav uk-navbar-dropdown-nav">
 										<li>
@@ -68,18 +68,11 @@
 												</span>Français
 											</a>
 										</li>
-										<li>
-											<a id="arabic">
-												<span class="uk-icon uk-margin-small-right">
-													<img src="img/flags/ar.svg" width="20">
-												</span>تونسي
-											</a>
-										</li>
 									</ul>
 								</div>
 							</li>
 							<li>
-								<a href="#"><span language-tag="theme">Theme</span> <span uk-navbar-parent-icon></span></a>
+								<a href="#"><span data-language-tag="theme">Theme</span> <span uk-navbar-parent-icon></span></a>
 								<div class="uk-navbar-dropdown">
 									<ul class="uk-nav uk-navbar-dropdown-nav">
 										<li>
@@ -106,8 +99,8 @@
 		</nav>
 	</div>
 
-	<h1 class="uk-heading-bullet" language-tag="title">Welcome to Comparini</h1>
-	<span class="uk-text-muted" language-tag="title-caption">Discover whatever you need easily and at a cheaper price.</span>
+	<h1 class="uk-heading-bullet" data-language-tag="title">Welcome to Comparini</h1>
+	<span class="uk-text-muted" data-language-tag="title-caption">Discover whatever you need easily and at a cheaper price.</span>
 
 	<div id="categories_filter">
 		<div class="uk-container">
@@ -129,7 +122,7 @@
 			</center>
 		</div>
 
-		<center><h1 id="top_products" class="uk-heading-small" language-tag="top_products">Top Products</h1></center>
+		<center><h1 id="top_products" class="uk-heading-small" data-language-tag="top_products">Top Products</h1></center>
 
 		<ul id="products" class="uk-grid-small uk-child-width-1-6 uk-text-center uk-grid-match" uk-grid>
 			<!-- Load 24 most viewed Products -->

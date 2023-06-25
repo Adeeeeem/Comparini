@@ -8,7 +8,7 @@ $(window).on("load", function()
 ==================================================*/
 	$.ajax
 	({
-		url: "php/get_all_categories.php",
+		url: "php/get_categories.php",
 		type: "POST",
 		dataType: "json",
 		contentType: "application/json",
@@ -21,9 +21,11 @@ $(window).on("load", function()
 			{
 				$.each(response.categories, function(index, category)
 				{
-					var categoryHTML = '<li><center><div id="' + category.label + '" class="uk-card uk-card-default uk-card-small"><div class="uk-card-body"><img src="img/categories/' + category.label + '.png"></div><div class="uk-card-footer"><span language-tag="' + category.label + '">' + category.name + '</span></div></div></center></li>';
+					var categoryHTML = '<li><center><div id="' + category.label + '" class="uk-card uk-card-default uk-card-small"><div class="uk-card-body"><img src="img/categories/' + category.label + '.png"></div><div class="uk-card-footer"><span data-language-tag="' + category.label + '">' + category.name + '</span></div></div></center></li>';
 					$("div#categories_filter div#categories ul").append(categoryHTML);
 				});
+
+				translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
 			}
 			else
 				$.growl.error({ message: "Oh no! It seems like all the categories are on a vacation and have left us stranded here! We apologize for the inconvenience and hope they come back soon." });
@@ -55,6 +57,8 @@ $(window).on("load", function()
 					var productHTML = '<li><div id="' + product.id + '" class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</p><h5>' + product.price + ' DT</h5></div></li>';
 						$("div#categories_filter ul#products").append(productHTML);
 				});
+
+				translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
 			}
 			else
 				$.growl.error({ message: "Oops! Our products seem to have gone on a spontaneous vacation. We're working hard to bring them back. Please check back later for some amazing deals!" });
@@ -98,6 +102,8 @@ $(function()
 						var productHTML = '<li><div id="' + product.id + '" class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</p><h5>' + product.price + ' DT</h5></div></li>';
 						$("div#categories_filter ul#products").append(productHTML);
 					});
+
+					translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
 				}
 			},
 			error: function(xhr, textStatus, errorThrown)
@@ -145,6 +151,8 @@ $(function()
 						var productHTML = '<li><div id="' + product.id + '" class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</p><h5>' + product.price + ' DT</h5></div></li>';
 						$("div#categories_filter ul#products").append(productHTML);
 					});
+
+					translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
 				}
 			},
 			error: function(xhr, textStatus, errorThrown)

@@ -29,7 +29,7 @@ $(window).on("load", function()
 ==================================================*/
 	if (localStorage.getItem("COMPARINI_LANGUAGE") == null){localStorage.setItem("COMPARINI_LANGUAGE", "english");}
 
-	translate(localStorage.getItem("COMPARINI_LANGUAGE"), "language-tag");
+	translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
 });
 /*==================================================
 			Change Theme
@@ -63,17 +63,17 @@ $(function()
 {
 	$("#english").click(function()
 	{
-		translate("english", "language-tag");
+		translate("english", "data-language-tag");
 		localStorage.setItem("COMPARINI_LANGUAGE", "english");
 	});
 	$("#french").click(function()
 	{
-		translate("french", "language-tag");
+		translate("french", "data-language-tag");
 		localStorage.setItem("COMPARINI_LANGUAGE", "french");
 	});
 	$("#arabic").click(function()
 	{
-		translate("arabic", "language-tag");
+		translate("arabic", "data-language-tag");
 		localStorage.setItem("COMPARINI_LANGUAGE", "arabic");
 	});
 });
