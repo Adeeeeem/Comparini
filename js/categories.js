@@ -25,6 +25,7 @@ $(window).on("load", function()
 				{
 					if (existingCategories.indexOf(category.category_label) === -1)
 					{
+						/* Top Navbar */
 						var menuItem = document.createElement("li");
 						menuItem.id = category.category_label;
 
@@ -55,6 +56,38 @@ $(window).on("load", function()
 						dropdownDiv.appendChild(gridDiv);
 						menuItem.appendChild(dropdownDiv);
 						$("nav#categories_nav ul").append(menuItem);
+
+						/* Left Menu */
+						var flexDiv = document.createElement("div");
+						flexDiv.className = "uk-flex uk-flex-between";
+						flexDiv.id = category.category_label;
+
+						var label = document.createElement("label");
+						label.className = "uk-text-left";
+
+						var checkbox = document.createElement("input");
+						checkbox.className = "uk-checkbox";
+						checkbox.type = "checkbox";
+						label.appendChild(checkbox);
+
+						var space = document.createElement("span");
+						space.innerHTML = "&nbsp;";
+						label.appendChild(space);
+
+						var labelText = document.createElement("span");
+						labelText.setAttribute("data-language-tag", category.category_label);
+						labelText.textContent = category.category_name;
+						label.appendChild(labelText);
+						flexDiv.appendChild(label);
+
+						var countSpan = document.createElement("span");
+						countSpan.className = "uk-text-right";
+						countSpan.textContent = category.category_product_count;
+
+						flexDiv.appendChild(countSpan);
+
+						$("#categories_filter").append(flexDiv);
+						$("#categories_filter").append(document.createElement("br"));
 						
 						existingCategories.push(category.category_label);
 					}
@@ -67,6 +100,7 @@ $(window).on("load", function()
 				{
 					if (existingSubCategories.indexOf(subCategory.sub_category_label) === -1)
 					{
+						/* Top Navbar */
 						var subCategoryDiv = document.createElement("div");
 
 						var subCategoryUl = document.createElement("ul");
@@ -92,6 +126,7 @@ $(window).on("load", function()
 						{
 							if (subDescription.description !== null && existingDescription.indexOf(subDescription.description) === -1 && subDescription.sub_category_label === subCategory.sub_category_label)
 							{
+								/* Top Navbar */
 								var subCategoryDescription = document.createElement("li");
 
 								var subSpanDescription = document.createElement("span");
@@ -100,9 +135,115 @@ $(window).on("load", function()
 
 								subCategoryDescription.appendChild(subSpanDescription);
 								subCategoryUl.appendChild(subCategoryDescription);
+
+								/* Left Menu */
+								var flexDiv = document.createElement("div");
+								flexDiv.className = "uk-flex uk-flex-between";
+								flexDiv.id = subDescription.description;
+
+								var label = document.createElement("label");
+								label.className = "uk-text-left";
+
+								var checkbox = document.createElement("input");
+								checkbox.className = "uk-checkbox";
+								checkbox.type = "checkbox";
+								label.appendChild(checkbox);
+
+								var space = document.createElement("span");
+								space.innerHTML = "&nbsp;";
+								label.appendChild(space);
+
+								var labelText = document.createElement("span");
+								labelText.setAttribute("data-language-tag", subDescription.description);
+								labelText.textContent = subDescription.description;
+								label.appendChild(labelText);
+								flexDiv.appendChild(label);
+
+								var countSpan = document.createElement("span");
+								countSpan.className = "uk-text-right";
+								countSpan.textContent = subDescription.description_product_count;
+
+								flexDiv.appendChild(countSpan);
+
+								$("#types_filter").append(flexDiv);
+								$("#types_filter").append(document.createElement("br"));
+
 								existingDescription.push(subDescription.description);
 							}
 						});
+
+						/* Left Menu */
+						var flexDiv = document.createElement("div");
+						flexDiv.className = "uk-flex uk-flex-between";
+						flexDiv.id = subCategory.sub_category_label;
+
+						var label = document.createElement("label");
+						label.className = "uk-text-left";
+
+						var checkbox = document.createElement("input");
+						checkbox.className = "uk-checkbox";
+						checkbox.type = "checkbox";
+						label.appendChild(checkbox);
+
+						var space = document.createElement("span");
+						space.innerHTML = "&nbsp;";
+						label.appendChild(space);
+
+						var labelText = document.createElement("span");
+						labelText.setAttribute("data-language-tag", subCategory.sub_category_label);
+						labelText.textContent = subCategory.sub_category_name;
+						label.appendChild(labelText);
+						flexDiv.appendChild(label);
+
+						var countSpan = document.createElement("span");
+						countSpan.className = "uk-text-right";
+						countSpan.textContent = subCategory.sub_category_product_count;
+
+						flexDiv.appendChild(countSpan);
+
+						$("#sub_categories_filter").append(flexDiv);
+						$("#sub_categories_filter").append(document.createElement("br"));
+					}
+				});
+
+				var existingManufactures = [];
+
+				$.each(response.subCategories, function(index, manufacture)
+				{
+					if (existingManufactures.indexOf(manufacture.manufacture) === -1)
+					{
+						/* Left Menu */
+						var flexDiv = document.createElement("div");
+						flexDiv.className = "uk-flex uk-flex-between";
+						flexDiv.id = manufacture.manufacture;
+
+						var label = document.createElement("label");
+						label.className = "uk-text-left";
+
+						var checkbox = document.createElement("input");
+						checkbox.className = "uk-checkbox";
+						checkbox.type = "checkbox";
+						label.appendChild(checkbox);
+
+						var space = document.createElement("span");
+						space.innerHTML = "&nbsp;";
+						label.appendChild(space);
+
+						var labelText = document.createElement("span");
+						labelText.textContent = manufacture.manufacture;
+						label.appendChild(labelText);
+						flexDiv.appendChild(label);
+
+						var countSpan = document.createElement("span");
+						countSpan.className = "uk-text-right";
+						countSpan.textContent = manufacture.manufacture_product_count;
+
+						flexDiv.appendChild(countSpan);
+
+						$("#manufactures_filter").append(flexDiv);
+						$("#manufactures_filter").append(document.createElement("br"));
+						
+						existingManufactures.push(manufacture.manufacture);
 					}
 				});
 

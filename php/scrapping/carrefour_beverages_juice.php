@@ -226,7 +226,7 @@
 									case "Boisson Instantanée": $description = "Boisson Instantanée"; break;
 									case "Boisson Concentrée": $description = "Boisson Concentrée"; break;
 									case "Sirop": $description = "Sirop"; break;
-									default: if (strpos($name, "Jus") !== false) $description = "Jus"; break;
+									default: if (strpos($name, "Jus") !== false) $description = "Jus"; else $description = "Others"; break;
 								}
 
 								/* Get Product Class */

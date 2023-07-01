@@ -48,5 +48,10 @@
 	"Boisson Instantanée": "Instant Drink",
 	"Nectar": "Nectar",
 	"Boisson Concentrée": "Concentrated Drink",
-	"Sirop": "Syrup"
+	"Sirop": "Syrup",
+	"Others": "Others",
+	"categories": "Categories",
+	"sub_categories": "Sub-Categories",
+	"manufactures": "Manufacturers",
+	"types": "Types"
 }

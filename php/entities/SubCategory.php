@@ -44,23 +44,30 @@
 				$request = "SELECT
 					C.label AS category_label,
 					C.name AS category_name,
+					(SELECT COUNT(P2.id) FROM {$this->productTable} P2 INNER JOIN {$this->table} SC2 ON P2.sub_category_id = SC2.id WHERE P2.is_enabled = true AND SC2.category_id = SC.category_id) AS category_product_count,
 					SC.label AS sub_category_label,
 					SC.name AS sub_category_name,
+					(SELECT COUNT(SC2.category_id) FROM {$this->table} SC2 WHERE SC2.is_enabled = true AND SC2.category_id = SC.category_id) AS sub_category_count,
+					(SELECT COUNT(P2.id) FROM {$this->productTable} P2 WHERE P2.is_enabled = true AND P2.sub_category_id = SC.id) AS sub_category_product_count,
+					P.manufacture,
+					(SELECT COUNT(P2.id) FROM Product P2 WHERE P2.is_enabled = true AND P2.manufacture = P.manufacture) AS manufacture_product_count,
 					P.description,
-					(SELECT COUNT(SC2.category_id) FROM {$this->table} SC2 WHERE SC2.category_id = SC.category_id) AS sub_category_count
+					(SELECT COUNT(P2.id) FROM {$this->productTable} P2 WHERE P2.is_enabled = true AND P2.description = P.description) AS description_product_count
 				FROM {$this->categoryTable} C
 				LEFT JOIN {$this->table} SC
 					ON C.id = SC.category_id
 				LEFT JOIN {$this->productTable} P
 					ON SC.id = P.sub_category_id
-				WHERE SC.is_enabled = true AND C.is_enabled
+				WHERE SC.is_enabled AND C.is_enabled
 				GROUP BY
 					C.label,
 					SC.label,
+					P.manufacture,
 					P.description
 				ORDER BY
 					C.id ASC,
-					SC.id ASC;";
+					SC.id ASC,
+					CASE WHEN P.description = 'Others' THEN 2 ELSE 1 END ASC;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Execute Query
