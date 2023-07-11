@@ -48,7 +48,7 @@
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
 							<li><a href="./"><span data-language-tag="home">Home</span></a></li>
-							<li><a href="./categories.html" onclick="event.preventDefault();"><span data-language-tag="categories">Categories</span></a></li>
+							<li><a href="./categories.html"><span data-language-tag="categories">Categories</span></a></li>
 							<li><a href="./contact.html"><span data-language-tag="contact">Contact</span></a></li>
 							<li>
 								<a href="#"><span data-language-tag="languages">Languages</span> <span uk-navbar-parent-icon></span></a>
@@ -119,15 +119,6 @@
 	<!-- Left Menu -->
 	<div id="menu">
 		<div class="filters">
-			<div id="categories_filter_title" class="uk-flex uk-flex-between uk-flex-middle uk-margin-right uk-margin-left">
-				<h4 class="uk-margin-remove"><span data-language-tag="categories">Categories</span></h4>
-				<a href="#toggle-animation" uk-toggle="target: #categories_filter; animation: uk-animation-fade" class="uk-margin-left">
-					<span uk-icon="plus" style="font-size: 14px;"></span>
-				</a>
-			</div>
-			<div id="categories_filter" class="uk-margin uk-margin-small-left uk-margin-small-right" style="width: 90%;">
-				<!-- Load from JS -->
-			</div>
 			<div id="sub_categories_filter_title" class="uk-flex uk-flex-between uk-flex-middle uk-margin-right uk-margin-left">
 				<h4 class="uk-margin-remove"><span data-language-tag="sub_categories">Sub Categories</span></h4>
 				<a href="#toggle-animation" uk-toggle="target: #sub_categories_filter; animation: uk-animation-fade" class="uk-margin-left">
@@ -159,8 +150,10 @@
 	</div>
 
 	<!-- Products -->
-	<div id="products" class="uk-text-center uk-padding-small">
-
+	<div id="products_container" class="uk-text-center uk-padding-small">
+		<ul id="products" class="uk-grid-small uk-child-width-1-6 uk-text-center uk-grid-match" uk-grid>
+			<!-- Load 24 most viewed Products -->
+		</ul>
 	</div>
 
 	<!-- UIkit JavaScript 3.16.14 -->

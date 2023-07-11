@@ -483,10 +483,31 @@
 				return false;
 			}
 
+			public function getTopProducts()
+			{
+				// Prepare the SQL statement to fetch top products limited
+				$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price
+				FROM {$this->table} P
+				INNER JOIN {$this->productProviderTable} PP
+					ON P.id = PP.product_id
+				WHERE P.is_enabled = true
+				GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
+				ORDER BY viewed DESC;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Execute Query
+				$statement->execute();
+				/* Retrieve Products */
+				$products = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+				return $products;
+			}
+
 			public function getTopProductsLimited($number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price
+				FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				WHERE P.is_enabled = true
@@ -507,7 +528,8 @@
 			public function getTopProductsByCategoryLimited($category, $number)
 			{
 				// Prepare the SQL statement to fetch top products limited
-				$request = "SELECT P.id, P.name, PP.image, P.quantity, P.unit, P.flavor, P.manufacture, MIN(PP.price) AS price FROM {$this->table} P
+				$request = "SELECT P.id, P.name, PP.image, P.quantity, P.unit, P.flavor, P.manufacture, MIN(PP.price) AS price
+				FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
 				INNER JOIN {$this->subCategoryTable} SC
@@ -537,7 +559,8 @@
 				if (!empty($value))
 				{
 					// Prepare the SQL statement to fetch products limited
-					$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price FROM {$this->table} P
+					$request = "SELECT P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture, PP.image, MIN(PP.price) AS price
+					FROM {$this->table} P
 					INNER JOIN {$this->productProviderTable} PP
 						ON P.id = PP.product_id
 					WHERE P.is_enabled = true
@@ -585,6 +608,50 @@
 				$details = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 				return $details;
+			}
+
+			public function getFilteredProducts($category, $sub_category, $type)
+			{
+				// Prepare the SQL statement to fetch product details
+				$request = "SELECT P.id, P.name, PP.image, P.quantity, P.unit, P.flavor, P.manufacture, MIN(PP.price) AS price
+				FROM {$this->table} P
+				INNER JOIN {$this->productProviderTable} PP
+					ON P.id = PP.product_id
+				INNER JOIN {$this->subCategoryTable} SC
+					ON P.sub_category_id = SC.id
+				INNER JOIN {$this->categoryTable} C
+					ON SC.category_id = C.id
+				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true";
+
+				if (!empty($category))
+					$request .= " AND UPPER(C.label) = UPPER(:category_id)";
+
+				if (!empty($sub_category))
+					$request .= " AND UPPER(SC.label) = UPPER(:sub_category_id)";
+
+				if (!empty($type))
+					$request .= " AND UPPER(P.description) = UPPER(:type)";
+
+				$request .= " GROUP BY P.id, P.name, P.quantity, P.unit, P.flavor, P.manufacture
+				ORDER BY P.viewed DESC";
+
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				if (!empty($category))
+					$statement->bindParam(":category_id", $category, PDO::PARAM_STR, 255);
+
+				if (!empty($sub_category))
+						$statement->bindParam(":sub_category_id", $sub_category, PDO::PARAM_STR, 255);
+
+				if (!empty($type))
+						$statement->bindParam(":type", $type, PDO::PARAM_STR, 255);
+				// Execute Query
+				$statement->execute();
+				/* Retrieve Products */
+				$products = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+				return $products;
 			}
 		}
 	}

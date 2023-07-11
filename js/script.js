@@ -21,8 +21,37 @@ $(window).on("load", function()
 			{
 				$.each(response.categories, function(index, category)
 				{
-					var categoryHTML = '<li><center><div id="' + category.label + '" class="uk-card uk-card-default uk-card-small"><div class="uk-card-body"><img src="img/categories/' + category.label + '.png"></div><div class="uk-card-footer"><span data-language-tag="' + category.label + '">' + category.name + '</span></div></div></center></li>';
-					$("div#categories_filter div#categories ul").append(categoryHTML);
+					var liElement = document.createElement("li");
+
+					var centerElement = document.createElement("center");
+
+					var divElement = document.createElement("div");
+					divElement.id = category.label;
+					divElement.className = "uk-card uk-card-default uk-card-small";
+  
+					var divCardBody = document.createElement("div");
+					divCardBody.className = "uk-card-body";
+  
+					var imgElement = document.createElement("img");
+					imgElement.src = "img/categories/" + category.label + ".png";
+  
+					divCardBody.appendChild(imgElement);
+					divElement.appendChild(divCardBody);
+  
+					var divCardFooter = document.createElement("div");
+					divCardFooter.className = "uk-card-footer";
+  
+					var spanElement = document.createElement("span");
+					spanElement.setAttribute("data-language-tag", category.label);
+					spanElement.textContent = category.name;
+  
+					divCardFooter.appendChild(spanElement);
+					divElement.appendChild(divCardFooter);
+  
+					centerElement.appendChild(divElement);
+					liElement.appendChild(centerElement);
+  
+					$("div#categories_filter div#categories ul").append(liElement);
 				});
 
 				translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
@@ -54,8 +83,54 @@ $(window).on("load", function()
 			{
 				$.each(response.products, function(index, product)
 				{
-					var productHTML = '<li><div id="' + product.id + '" class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</p><h5>' + product.price + ' DT</h5></div></li>';
-						$("div#categories_filter ul#products").append(productHTML);
+					var liElement = document.createElement("li");
+
+					var divElement = document.createElement("div");
+					divElement.id = product.id;
+					divElement.className = "uk-card uk-card-default uk-card-body";
+
+					var favoriteIcon = document.createElement("span");
+					favoriteIcon.className = "uk-position-top-right favorite-icon";
+
+					var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+					svgElement.setAttribute("width", "30");
+					svgElement.setAttribute("height", "30");
+					svgElement.setAttribute("viewBox", "0 0 20 20");
+
+					var pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+					pathElement.className = "favorite-heart";
+					pathElement.setAttribute("fill", "none");
+					pathElement.setAttribute("stroke", "#000");
+					pathElement.setAttribute("stroke-width", "1.03");
+					pathElement.setAttribute("d", "M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z");
+  
+					svgElement.appendChild(pathElement);
+					favoriteIcon.appendChild(svgElement);
+  
+					var h6Element = document.createElement("h6");
+					h6Element.textContent = product.manufacture;
+  
+					var imgElement = document.createElement("img");
+					imgElement.src = product.image;
+  
+					var h4Element = document.createElement("h4");
+					h4Element.textContent = product.name;
+  
+					var pElement = document.createElement("p");
+					pElement.textContent = product.quantity + " " + product.unit + " " + product.flavor;
+  
+					var h5Element = document.createElement("h5");
+					h5Element.textContent = product.price + " DT";
+  
+					divElement.appendChild(favoriteIcon);
+					divElement.appendChild(h6Element);
+					divElement.appendChild(imgElement);
+					divElement.appendChild(h4Element);
+					divElement.appendChild(pElement);
+					divElement.appendChild(h5Element);
+					liElement.appendChild(divElement);
+  
+					$("div#categories_filter ul#products").append(liElement);
 				});
 
 				translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
@@ -99,8 +174,54 @@ $(function()
 
 					$.each(response.products, function(index, product)
 					{
-						var productHTML = '<li><div id="' + product.id + '" class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</p><h5>' + product.price + ' DT</h5></div></li>';
-						$("div#categories_filter ul#products").append(productHTML);
+						var liElement = document.createElement("li");
+
+						var divElement = document.createElement("div");
+						divElement.id = product.id;
+						divElement.className = "uk-card uk-card-default uk-card-body";
+
+						var favoriteIcon = document.createElement("span");
+						favoriteIcon.className = "uk-position-top-right favorite-icon";
+
+						var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+						svgElement.setAttribute("width", "30");
+						svgElement.setAttribute("height", "30");
+						svgElement.setAttribute("viewBox", "0 0 20 20");
+
+						var pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+						pathElement.className = "favorite-heart";
+						pathElement.setAttribute("fill", "none");
+						pathElement.setAttribute("stroke", "#000");
+						pathElement.setAttribute("stroke-width", "1.03");
+						pathElement.setAttribute("d", "M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z");
+	  
+						svgElement.appendChild(pathElement);
+						favoriteIcon.appendChild(svgElement);
+	  
+						var h6Element = document.createElement("h6");
+						h6Element.textContent = product.manufacture;
+	  
+						var imgElement = document.createElement("img");
+						imgElement.src = product.image;
+	  
+						var h4Element = document.createElement("h4");
+						h4Element.textContent = product.name;
+	  
+						var pElement = document.createElement("p");
+						pElement.textContent = product.quantity + " " + product.unit + " " + product.flavor;
+	  
+						var h5Element = document.createElement("h5");
+						h5Element.textContent = product.price + " DT";
+	  
+						divElement.appendChild(favoriteIcon);
+						divElement.appendChild(h6Element);
+						divElement.appendChild(imgElement);
+						divElement.appendChild(h4Element);
+						divElement.appendChild(pElement);
+						divElement.appendChild(h5Element);
+						liElement.appendChild(divElement);
+	  
+						$("div#categories_filter ul#products").append(liElement);
 					});
 
 					translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");
@@ -148,8 +269,54 @@ $(function()
 
 					$.each(response.products, function(index, product)
 					{
-						var productHTML = '<li><div id="' + product.id + '" class="uk-card uk-card-default uk-card-body"><span class="uk-position-top-right favorite-icon"><svg width="30" height="30" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path class="favorite-heart" fill="none" stroke="#000" stroke-width="1.03" d="M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z"></path></svg></span><h6>' + product.manufacture + '</h6><img src="' + product.image + '"><h4>' + product.name + '</h4><p>' + product.quantity + ' ' + product.unit + ' ' + product.flavor + '</p><h5>' + product.price + ' DT</h5></div></li>';
-						$("div#categories_filter ul#products").append(productHTML);
+						var liElement = document.createElement("li");
+
+						var divElement = document.createElement("div");
+						divElement.id = product.id;
+						divElement.className = "uk-card uk-card-default uk-card-body";
+
+						var favoriteIcon = document.createElement("span");
+						favoriteIcon.className = "uk-position-top-right favorite-icon";
+
+						var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+						svgElement.setAttribute("width", "30");
+						svgElement.setAttribute("height", "30");
+						svgElement.setAttribute("viewBox", "0 0 20 20");
+
+						var pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+						pathElement.className = "favorite-heart";
+						pathElement.setAttribute("fill", "none");
+						pathElement.setAttribute("stroke", "#000");
+						pathElement.setAttribute("stroke-width", "1.03");
+						pathElement.setAttribute("d", "M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z");
+	  
+						svgElement.appendChild(pathElement);
+						favoriteIcon.appendChild(svgElement);
+	  
+						var h6Element = document.createElement("h6");
+						h6Element.textContent = product.manufacture;
+	  
+						var imgElement = document.createElement("img");
+						imgElement.src = product.image;
+	  
+						var h4Element = document.createElement("h4");
+						h4Element.textContent = product.name;
+	  
+						var pElement = document.createElement("p");
+						pElement.textContent = product.quantity + " " + product.unit + " " + product.flavor;
+	  
+						var h5Element = document.createElement("h5");
+						h5Element.textContent = product.price + " DT";
+	  
+						divElement.appendChild(favoriteIcon);
+						divElement.appendChild(h6Element);
+						divElement.appendChild(imgElement);
+						divElement.appendChild(h4Element);
+						divElement.appendChild(pElement);
+						divElement.appendChild(h5Element);
+						liElement.appendChild(divElement);
+	  
+						$("div#categories_filter ul#products").append(liElement);
 					});
 
 					translate(localStorage.getItem("COMPARINI_LANGUAGE"), "data-language-tag");

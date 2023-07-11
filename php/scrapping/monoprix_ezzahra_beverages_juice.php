@@ -123,6 +123,9 @@
 								if ($manufacture == "DÉLICE DE FRUITS" || $manufacture == "DELICE")
 									$manufacture = "DÉLICE";
 
+								if ($manufacture == "AL MARAI")
+									$manufacture = "ALMARAI";
+
 								if ($manufacture == "BNINO STIL" || $manufacture == "ENERGY STIL")
 									$manufacture = "STIL";
 
@@ -175,10 +178,10 @@
 								switch ($name)
 								{
 									case "Nectar": $description = "Nectar"; break;
-									case "Boisson Instantanée": $description = "Boisson Instantanée"; break;
-									case "Boisson Concentrée": $description = "Boisson Concentrée"; break;
-									case "Sirop": $description = "Sirop"; break;
-									default: if (strpos($name, "Jus") !== false) $description = "Jus"; else $description = "Others"; break;
+									case "Boisson Instantanée": $description = "Instant Drink"; break;
+									case "Boisson Concentrée": $description = "Concentrated Drink"; break;
+									case "Sirop": $description = "Syrup"; break;
+									default: if (strpos($name, "Jus") !== false) $description = "Juice"; else $description = "Others"; break;
 								}
 
 								/* Get Product Class */

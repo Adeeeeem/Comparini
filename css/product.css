@@ -11,6 +11,6 @@ div.uk-card p{color: #999!important;}
 #product_details div.uk-card h5 span.price{font-weight: bold;}
 #product_details div.uk-card h5 span.price.economy{color: #CC1C39;}
 #product_comparison{margin: 50px 250px;}
-#product_comparison small.uk-text-muted{color: #039C0F !important;}
+#product_comparison small.uk-text-muted{color: #039C0F !important; display: block; line-height: 2;}
 #product_comparison .uk-table-hover tbody tr:hover, #product_comparison .uk-table-hover > tr:hover{background-color: #E6F0F8;}
 #product_comparison img{width: 65px; height: 65px;}

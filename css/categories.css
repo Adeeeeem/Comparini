@@ -1,7 +1,6 @@
 /*==================================================
 				Content
 ==================================================*/
-#content{bottom: 0; overflow-y: auto; width: 100%; padding: 25px 200px;}
 nav#categories_nav{padding: 0 30px 0 30px; background-color: var(--nav-color) !important; border-radius: 25px;}
 nav#categories_nav li{margin-right: 25px; margin-left: 25px;}
 nav#categories_nav ul.uk-navbar-nav > li > a{color: var(--secondary-color) !important;}
@@ -11,7 +10,18 @@ nav#categories_nav ul.uk-navbar-nav > li > a, nav#categories_nav ul.uk-navbar-na
 ==================================================*/
 /* Menu */
 #menu{position: fixed; left: 0; top: 200px; bottom: 0; overflow-y: auto; width: 250px; background-color: var(--nav-color) !important; border-radius: 25px; padding: 10px;}
+#menu h4 span{color: var(--text-color);}
 /*==================================================
 				Products
 ==================================================*/
-#products{margin-left: 250px;}
+#products_container{margin-left: 250px; background-color: var(--body-color);}
+#products_container ul#products li div.uk-card{width: 175px !important; background-color: var(--nav-color) !important; cursor: pointer; margin: 25px !important;}
+#products_container ul#products li div.uk-card h4{color: var(--text-color);}
+#products_container ul#products li div.uk-card p{color: #999 !important;}
+#products_container ul#products li div.uk-card.uk-card-body{padding: 10px 5px !important;}
+#products_container ul#products li div.uk-card.uk-card-body img{width: 150px !important; aspect-ratio: 1 / 1 !important; object-fit: cover !important;}
+#products_container ul#products li div.uk-card.uk-card-body h5{font-weight: bold; color: #CC1C39; bottom: 0;}
+#products_container ul#products li div.uk-card.uk-card-body h6{font-weight: bold; color: #999; bottom: 0;}
+#products_container ul#products li div.uk-card.uk-card-body span.favorite-icon{position: relative; margin-top: 4px; margin-right: 4px;}
+#products_container ul#products li div.uk-card.uk-card-body span.favorite-icon svg .favorite-heart{fill: none; stroke: var(--text-color); stroke-width: 1.03;}
+#products_container ul#products li div.uk-card.uk-card-body span.favorite-icon:hover svg .favorite-heart{fill: #CC1C39; stroke: #CC1C39;}
