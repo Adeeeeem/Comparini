@@ -64,6 +64,22 @@
 					$page = isset($_GET["p"]) ? $_GET["p"] : 1;
 					$productsFound = false;
 
+					/* Database Configuraitons */
+					require_once "../configuration/database.php";
+
+					/* Include the Product Class */
+					require_once "../entities/Product.php";
+
+					/* Get BD connection */
+					$database = new Database();
+					$connection = $database->getConnection();
+
+					/* Get Product Class */
+					$product = new Product($connection);
+
+					/* Disable all existing products and product providers */
+					$product->disableAllProducts("Carrefour");
+
 					do
 					{
 						$queryParameters = ["p" => $page];
@@ -80,16 +96,6 @@
 
 						if ($productElements->length > 0)
 						{
-							/* Database Configuraitons */
-							require_once "../configuration/database.php";
-
-							/* Include the Product Class */
-							require_once "../entities/Product.php";
-
-							/* Get BD connection */
-							$database = new Database();
-							$connection = $database->getConnection();
-
 							foreach ($productElements as $productElement)
 							{
 								$nameElement = $xpath->query(".//strong[@class='product name']/a", $productElement)->item(0);
@@ -228,9 +234,6 @@
 									case "Sirop": $description = "Syrup"; break;
 									default: if (strpos($name, "Jus") !== false) $description = "Juice"; else $description = "Others"; break;
 								}
-
-								/* Get Product Class */
-								$product = new Product($connection);
 
 								$product->setName($name);
 								$product->setManufacture($manufacture);

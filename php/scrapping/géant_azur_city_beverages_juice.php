@@ -64,6 +64,22 @@
 					$page = isset($_GET["page"]) ? $_GET["page"] : 1;
 					$productsFound = false;
 
+					/* Database Configuraitons */
+					require_once "../configuration/database.php";
+
+					/* Include the Product Class */
+					require_once "../entities/Product.php";
+
+					/* Get BD connection */
+					$database = new Database();
+					$connection = $database->getConnection();
+
+					/* Get Product Class */
+					$product = new Product($connection);
+
+					/* Disable all existing products and product providers */
+					$product->disableAllProducts("Géant");
+
 					do
 					{
 						$queryParameters = ["page" => $page];
@@ -89,16 +105,6 @@
 
 						if ($productElements->length > 0)
 						{
-							/* Database Configuraitons */
-							require_once "../configuration/database.php";
-
-							/* Include the Product Class */
-							require_once "../entities/Product.php";
-
-							/* Get BD connection */
-							$database = new Database();
-							$connection = $database->getConnection();
-
 							foreach ($productElements as $productElement)
 							{
 								$linkElement = $xpath->query(".//h2[@class='h3 product-title']/a", $productElement)->item(0);
@@ -214,9 +220,6 @@
 									case "Sirop": $description = "Syrup"; break;
 									default: if (strpos($name, "Jus") !== false) $description = "Juice"; else $description = "Others"; break;
 								}
-
-								/* Get Product Class */
-								$product = new Product($connection);
 
 								$product->setName($name);
 								$product->setManufacture($manufacture);

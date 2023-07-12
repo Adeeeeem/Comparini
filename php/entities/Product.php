@@ -189,6 +189,50 @@
 				$this->provider = $provider;
 			}
 
+			private function enableProduct()
+			{
+				// Prepare the SQL statement to update the product's is_enabled flag
+				$request = "UPDATE {$this->table} SET is_enabled = true WHERE id = :product_id;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
+				// Execute Query
+				$statement->execute();
+			}
+
+			private function enableProductProvider()
+			{
+				// Prepare the SQL statement to update the product provider's is_enabled flag
+				$request = "UPDATE {$this->productProviderTable} SET is_enabled = true WHERE product_id = :product_id AND provider_id = :provider_id;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameters
+				$statement->bindParam(":product_id", $this->getId(), PDO::PARAM_INT);
+				$statement->bindParam(":provider_id", $this->getProviderIdByName($this->getProvider()), PDO::PARAM_INT);
+				// Execute Query
+				$statement->execute();
+
+				// Update the product's is_enabled flag
+				$this->enableProduct();
+			}
+
+			public function disableAllProducts($provider)
+			{
+				$provider_id = $this->getProviderIdByName($provider);
+
+				// Prepare the SQL statement to update the is_enabled flag for product providers
+				$request = "UPDATE {$this->productProviderTable} SET is_enabled = false WHERE provider_id = :provider_id;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":provider_id", $provider_id, PDO::PARAM_INT);
+				// Execute Query
+				$productProviderResult = $statement->execute();
+
+				return $productResult && $productProviderResult;
+			}
+
 			public function addProduct()
 			{
 				// Check if the Product exists
@@ -204,6 +248,9 @@
 						{
 							$this->updatePrice($this->getPrice());
 						}
+
+						// Set the product provider as enabled
+						$this->enableProductProvider();
 
 						return false;
 					}
@@ -286,9 +333,7 @@
 			{
 				// Prepare the SQL statement
 				$request = "SELECT P.id FROM {$this->table} P
-				WHERE P.is_enabled = true
-					AND
-					(
+				WHERE (
 						UPPER(P.name) LIKE CONCAT('%', UPPER(:name1), '%')
 						OR UPPER(:name2) LIKE CONCAT('%', UPPER(P.name), '%')
 					)
@@ -490,7 +535,7 @@
 				FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
-				WHERE P.is_enabled = true
+				WHERE P.is_enabled = true AND PP.is_enabled = true
 				GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
 				ORDER BY viewed DESC;";
 				// Preparing Statement
@@ -510,7 +555,7 @@
 				FROM {$this->table} P
 				INNER JOIN {$this->productProviderTable} PP
 					ON P.id = PP.product_id
-				WHERE P.is_enabled = true
+				WHERE P.is_enabled = true AND PP.is_enabled = true
 				GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
 				ORDER BY viewed DESC LIMIT :number;";
 				// Preparing Statement
@@ -536,7 +581,7 @@
 					ON P.sub_category_id = SC.id
 				INNER JOIN {$this->categoryTable} C
 					ON SC.category_id = C.id
-				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true
+				WHERE P.is_enabled = true AND PP.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true
 					AND C.label = :category
 				GROUP BY P.name, P.quantity, P.unit, P.flavor, P.manufacture
 				ORDER BY P.viewed DESC
@@ -563,7 +608,7 @@
 					FROM {$this->table} P
 					INNER JOIN {$this->productProviderTable} PP
 						ON P.id = PP.product_id
-					WHERE P.is_enabled = true
+					WHERE P.is_enabled = true AND PP.is_enabled = true
 					AND (UPPER(P.name) LIKE '%" . strtoupper($value) . "%'
 					OR UPPER(P.quantity) LIKE '%" . strtoupper($value) . "%'
 					OR UPPER(P.unit) LIKE '%" . strtoupper($value) . "%'
@@ -621,7 +666,7 @@
 					ON P.sub_category_id = SC.id
 				INNER JOIN {$this->categoryTable} C
 					ON SC.category_id = C.id
-				WHERE P.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true";
+				WHERE P.is_enabled = true AND PP.is_enabled = true AND C.is_enabled = true AND SC.is_enabled = true";
 
 				if (!empty($category))
 					$request .= " AND UPPER(C.label) = UPPER(:category_id)";

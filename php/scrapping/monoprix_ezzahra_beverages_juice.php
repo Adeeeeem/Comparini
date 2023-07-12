@@ -64,6 +64,22 @@
 					$page = isset($_GET["page"]) ? $_GET["page"] : 1;
 					$productsFound = false;
 
+					/* Database Configuraitons */
+					require_once "../configuration/database.php";
+
+					/* Include the Product Class */
+					require_once "../entities/Product.php";
+
+					/* Get BD connection */
+					$database = new Database();
+					$connection = $database->getConnection();
+
+					/* Get Product Class */
+					$product = new Product($connection);
+
+					/* Disable all existing products and product providers */
+					$product->disableAllProducts("Monoprix");
+
 					do
 					{
 						$queryParameters = ["page" => $page];
@@ -80,16 +96,6 @@
 
 						if ($productElements->length > 0)
 						{
-							/* Database Configuraitons */
-							require_once "../configuration/database.php";
-
-							/* Include the Product Class */
-							require_once "../entities/Product.php";
-
-							/* Get BD connection */
-							$database = new Database();
-							$connection = $database->getConnection();
-
 							foreach ($productElements as $productElement)
 							{
 								$linkElement = $xpath->query(".//div[@class='h3 product-title']/a", $productElement)->item(0);
@@ -184,9 +190,6 @@
 									default: if (strpos($name, "Jus") !== false) $description = "Juice"; else $description = "Others"; break;
 								}
 
-								/* Get Product Class */
-								$product = new Product($connection);
-
 								$product->setName($name);
 								$product->setManufacture($manufacture);
 								$product->setPrice($price);
@@ -225,7 +228,7 @@
 			catch (Exception $e)
 			{
 				/* Encode to Json Format */
-				$response = array("success" => false, "message" => "INVALID_TOKEN");
+				$response = array("success" => false, "message" => $e->getMessage());
 				/* Return as Json Format */
 				echo json_encode($response);
 				exit;
