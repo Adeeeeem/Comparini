@@ -572,12 +572,6 @@ INSERT INTO `product_provider` (`id`, `is_enabled`, `last_updated_date`, `price`
 (267, 1, '2023-07-08', 2.740, 'https://media.carrefour.tn/catalog/product/cache/bbe61c5e1237d092bcb31b107702a416/6/1/6194007890185.jpg', 'https://www.carrefour.tn/default/boisson-au-jus-nectar-de-mangue-null-6194007890185.html', 150, 3),
 (268, 1, '2023-07-08', 2.740, 'https://media.carrefour.tn/catalog/product/cache/bbe61c5e1237d092bcb31b107702a416/6/1/6194007892936-1.jpg', 'https://www.carrefour.tn/default/boisson-au-jus-multi-vitaminee-null-6194007892936.html', 151, 3);
 
--- Swap the images for both product 177 and 178
-
-UPDATE Product_Provider SET image = 'https://courses.monoprix.tn/ezzahra/146222-large_default/nectar.jpg' WHERE product_id = 49 and provider_id = 1;
-
-UPDATE Product_Provider SET image = 'https://courses.monoprix.tn/ezzahra/146223-large_default/boisson-au-jus.jpg' WHERE product_id = 50 and provider_id = 1;
-
 -- --------------------------------------------------------
 
 --

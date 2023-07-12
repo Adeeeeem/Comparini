@@ -249,6 +249,9 @@
 							$this->updatePrice($this->getPrice());
 						}
 
+						// Update Link and Image in case it's changed
+						$this->updateProduct();
+
 						// Set the product provider as enabled
 						$this->enableProductProvider();
 
@@ -486,6 +489,27 @@
 				$result = $statement->execute();
 
 				return $result;
+			}
+
+			private function updateProduct()
+			{
+				// Retrieve the product ID and provider ID
+				$productId = $this->getId();
+				$providerId = $this->getProviderIdByName($this->getProvider());
+
+				// Prepare the SQL statement to update the link and image
+				$request = "UPDATE {$this->productProviderTable}
+				SET link = :link, image = :image
+				WHERE product_id = :product_id AND provider_id = :provider_id;";
+				// Preparing Statement
+				$statement = $this->connection->prepare($request);
+				// Binding Parameter
+				$statement->bindParam(":link", $this->getLink(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":image", $this->getImage(), PDO::PARAM_STR, 255);
+				$statement->bindParam(":product_id", $productId, PDO::PARAM_INT);
+				$statement->bindParam(":provider_id", $providerId, PDO::PARAM_INT);
+				// Execute Query
+				$statement->execute();
 			}
 
 			private function getProviderIdByName($providerName)
