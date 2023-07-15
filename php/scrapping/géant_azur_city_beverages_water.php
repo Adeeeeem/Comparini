@@ -53,7 +53,7 @@
 					/* Set the time limit to 300 seconds */
 					set_time_limit(300);
 
-					$baseURL = "https://courses.monoprix.tn/ezzahra/76-boissons-gazeuses";
+					$baseURL = "https://www.geantdrive.tn/azur-city/11-eaux";
 
 					/* Create a new instance of the DOMDocument class */
 					$dom = new DOMDocument();
@@ -78,39 +78,55 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Monoprix");
+					$product->disableAllProducts("Géant");
 
 					do
 					{
 						$queryParameters = ["page" => $page];
 						$URL = $baseURL . '?' . http_build_query($queryParameters);
 
-						/* Load the HTML from the URL */
-						$dom->loadHTMLFile($URL, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+						/* Use cURL to fetch the HTML content */
+						$curl = curl_init();
+						curl_setopt($curl, CURLOPT_URL, $URL);
+						curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+						/* Disable SSL certificate verification */
+						curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+						$htmlContent = curl_exec($curl);
+						curl_close($curl);
+
+						/* Load the HTML content into the DOMDocument */
+						$dom->loadHTML($htmlContent, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
 						/* Create a new instance of the DOMXPath class */
 						$xpath = new DOMXPath($dom);
 
 						/* Find the product elements using XPath */
-						$productElements = $xpath->query("//li[contains(@class, 'product_item')]");
+						$productElements = $xpath->query("//div[contains(@class, 'item-product')]");
 
 						if ($productElements->length > 0)
 						{
 							foreach ($productElements as $productElement)
 							{
-								$linkElement = $xpath->query(".//div[@class='h3 product-title']/a", $productElement)->item(0);
+								$linkElement = $xpath->query(".//h2[@class='h3 product-title']/a", $productElement)->item(0);
 								$link = $linkElement !== null ? trim($linkElement->getAttribute("href")) : null;
 
-								/* Create a new instance of the DOMDocument class */
-								$productDom = new DOMDocument();
+								/* Use cURL to fetch the HTML content */
+								$curl = curl_init();
+								curl_setopt($curl, CURLOPT_URL, $link);
+								curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+								/* Disable SSL certificate verification */
+								curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+								$htmlContent = curl_exec($curl);
+								curl_close($curl);
 
-								/* Load the HTML from the URL */
-								$productDom->loadHTMLFile($link, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+								/* Load the HTML content into the DOMDocument */
+								$productDom = new DOMDocument();
+								$productDom->loadHTML($htmlContent, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
 								/* Create a new instance of the DOMXPath class */
 								$productXPath = new DOMXPath($productDom);
 
-								$nameElement = $productXPath->query("//h1[contains(@class, 'productpage_title')]")->item(0);
+								$nameElement = $productXPath->query("//h1[@class='h1 product-head1']")->item(0);
 								$name = $nameElement !== null ? trim($nameElement->textContent) : null;
 
 								$name = strtolower($name);
@@ -123,37 +139,32 @@
 									return strtoupper($match[0]);
 								}, $name);
 
-								$name = str_replace(" é", " É", $name);
-
-								$manufactureElement = $productXPath->query("//div[contains(@class, 'marque')]/span")->item(0);
+								$manufactureElement = $productXPath->query("//p[@class='manufacturer_product']/a")->item(0);
 								$manufacture = $manufactureElement !== null ? trim($manufactureElement->textContent) : null;
 
-								$priceElement = $productXPath->query("//div[contains(@class, 'current-price')]/span[@itemprop='price']")->item(0);
-								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->textContent)) : null;
+								$priceElement = $productXPath->query("//div[@class='current-price']/span[@itemprop='price']");
+								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->item(0)->textContent)) : null;
 
-								$imageElement = $productXPath->query("//img[contains(@class, 'js-qv-product-cover')]")->item(0);
-								$image = $imageElement !== null ? trim($imageElement->getAttribute("src")) : null;
+								$imageElement = $productXPath->query("//img[@id='zoom']");
+								$image = $imageElement !== null ? trim($imageElement->item(0)->getAttribute("src")) : null;
 
-								$quantityElement = $productXPath->query("//dd[contains(@class, 'value')]")->item(0);
-								$quantity = $quantityElement !== null ? trim(preg_replace("/[^0-9]/", "", $quantityElement->textContent)) : null;
-								$quantityText = $quantityElement !== null ? trim($quantityElement->textContent) : null;
-								$quantity = null;
+								$descriptionElement = $productXPath->query("//div[contains(@class, 'prodes')]");
+								$description = $descriptionElement !== null ? trim($descriptionElement->item(0)->nodeValue) : null;
 
-								preg_match("/\d+(\.\d+)?/", $quantityText, $matches);
-								if (!empty($matches))
-									$quantity = $matches[0];
+								$matches = [];
+								preg_match('/(?i)(\d+(?:\.\d+)?)\s*([a-z]+)(.*)/', $description, $matches);
 
-								$unit = $quantityElement !== null ? trim(preg_replace("/[^A-Z]/", "", strtoupper($quantityElement->textContent))) : null;
-								$unit = strtoupper($unit);
+								$quantity = isset($matches[1]) ? $matches[1] : null;
+								
+								$unit = isset($matches[2]) ? strtoupper($matches[2]) : null;
 
-								$flavorElement = $productXPath->query("//dd[contains(@class, 'value')]")->item(1);
-								$flavor = $flavorElement !== null ? trim($flavorElement->textContent) : null;
+								$flavor = isset($matches[3]) ? ucwords(trim($matches[3], " -")) : null;
 								$flavor = trim(preg_replace(["/(\w+)\s*-\s*(\w+)/", "/(\w+)\s* -\s*(\w+)/", "/(\w+)\s*- \s*(\w+)/"], "$1 $2", $flavor));
 								$flavor = trim(preg_replace("/\b(?:DE|AU|D'|A'|LA|LE|ET)\b\s*/i", "", $flavor));
 								$flavor = trim(str_replace([" DE ", " AU ", " D'", " A'", " LA ", " LE ", " ET "], " ", strtoupper($flavor)));
 								$flavor = trim(str_replace([" /", "/ ", "/"], " ", $flavor));
 								$flavor = trim(str_replace("  ", " ", $flavor));
-								
+
 								$flavor = strtolower($flavor);
 
 								$flavorWords = explode(" ", $flavor);
@@ -171,12 +182,12 @@
 
 								$description = null;
 
-								if (strpos($name, "Gazeuse") !== false)
-									$description = "Soda";
-								elseif (strpos($name, "Bière") !== false)
-									$description = "Alcohol-Free Beer";
-								elseif (strpos($name, "Tea") !== false)
-									$description = "Tea";
+								if (strpos($name, "Minérale") !== false)
+									$description = "Mineral Water";
+								elseif (strpos($name, "Gazéifiée") !== false)
+									$description = "Sparkling Water";
+								elseif (strpos($name, "Source") !== false)
+									$description = "Spring Water";
 								else
 									$description = "Others";
 
@@ -190,8 +201,8 @@
 								$product->setDescription($description);
 								$product->setLink($link);
 								$product->setCategory("beverages");
-								$product->setSubCategory("soda");
-								$product->setProvider("Monoprix");
+								$product->setSubCategory("water");
+								$product->setProvider("Géant");
 
 								$product->addProduct();
 							}
@@ -218,7 +229,7 @@
 			catch (Exception $e)
 			{
 				/* Encode to Json Format */
-				$response = array("success" => false, "message" => $e->getMessage());
+				$response = array("success" => false, "message" => "INVALID_TOKEN");
 				/* Return as Json Format */
 				echo json_encode($response);
 				exit;
