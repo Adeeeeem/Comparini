@@ -64,7 +64,6 @@ $(window).on("load", function()
 				});
 
 				var existingSubCategories = [];
-				var existingDescription = [];
 
 				$.each(response.subCategories, function(index, subCategory)
 				{
@@ -92,6 +91,8 @@ $(window).on("load", function()
 						$("nav#categories_nav ul li#" + subCategory.category_label + " div.uk-navbar-dropdown div.uk-drop-grid").append(subCategoryDiv);
 
 						existingSubCategories.push(subCategory.sub_category_label);
+
+						var existingDescription = [];
 
 						$.each(response.subCategories, function(index, subDescription)
 						{
