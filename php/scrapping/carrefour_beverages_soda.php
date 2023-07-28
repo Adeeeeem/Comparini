@@ -53,7 +53,7 @@
 					/* Set the time limit to 300 seconds */
 					set_time_limit(300);
 
-					$baseURL = "https://courses.monoprix.tn/ezzahra/75-eaux";
+					$baseURL = "https://www.carrefour.tn/default/mes-courses-alimentaires/boissons/gazeuses.html";
 
 					/* Create a new instance of the DOMDocument class */
 					$dom = new DOMDocument();
@@ -61,7 +61,7 @@
 					/* Enable internal error handling */
 					libxml_use_internal_errors(true);
 
-					$page = isset($_GET["page"]) ? $_GET["page"] : 1;
+					$page = isset($_GET["p"]) ? $_GET["p"] : 1;
 					$productsFound = false;
 
 					/* Database Configuraitons */
@@ -78,11 +78,11 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Monoprix", "Water");
+					$product->disableAllProducts("Carrefour", "Soda");
 
 					do
 					{
-						$queryParameters = ["page" => $page];
+						$queryParameters = ["p" => $page];
 						$URL = $baseURL . '?' . http_build_query($queryParameters);
 
 						/* Load the HTML from the URL */
@@ -92,28 +92,50 @@
 						$xpath = new DOMXPath($dom);
 
 						/* Find the product elements using XPath */
-						$productElements = $xpath->query("//li[contains(@class, 'product_item')]");
+						$productElements = $xpath->query("//li[contains(@class, 'product-item')]");
 
 						if ($productElements->length > 0)
 						{
 							foreach ($productElements as $productElement)
 							{
-								$linkElement = $xpath->query(".//div[@class='h3 product-title']/a", $productElement)->item(0);
+								$nameElement = $xpath->query(".//strong[@class='product name']/a", $productElement)->item(0);
+								$name = $nameElement !== null ? trim($nameElement->nodeValue) : null;
+
+								$manufactureElement = $xpath->query(".//a[@class='cr-brand-name']", $productElement)->item(0);
+								$manufacture = $manufactureElement !== null ? trim($manufactureElement->nodeValue) : null;
+
+								$priceElement = $xpath->query(".//span[@class='price']", $productElement)->item(0);
+								$priceText = $priceElement !== null ? trim($priceElement->textContent) : null;
+								$price = str_replace([" ", "\n", "dt"], "", $priceText);
+								$price = substr_replace($price, ".", -3, 0);
+
+								$imageElement = $xpath->query(".//img[@alt]", $productElement)->item(0);
+								$image = $imageElement !== null ? trim($imageElement->getAttribute("src")) : null;
+
+								$descriptionElement = $xpath->query(".//p[@class='cr-product-list-short-description-grid']", $productElement)->item(0);
+								$description = $descriptionElement !== null ? trim($descriptionElement->nodeValue) : null;
+								$description = preg_replace("/^.*?de /i", "", $description);
+								$description = strtoupper($description);
+								$description = preg_replace("/(\d+)([A-Z]+)/", "$1 $2", $description);
+								$description = str_replace("G", "GR", $description);
+
+								$matches = [];
+								preg_match('/(?i)(\d+(?:\.\d+)?)\s*([a-z]+)(.*)/', $description, $matches);
+
+								$quantity = isset($matches[1]) ? $matches[1] : null;
+								$unit = isset($matches[2]) ? strtoupper($matches[2]) : null;
+
+								$linkElement = $xpath->query(".//strong[@class='product name']/a[@class='product-item-link']", $productElement)->item(0);
 								$link = $linkElement !== null ? trim($linkElement->getAttribute("href")) : null;
 
-								/* Create a new instance of the DOMDocument class */
-								$productDom = new DOMDocument();
+								$name = trim(str_replace(["à la ", "de ", " de ", " et ", "d'", "au ", " /", "/ ", "/", "-"], " ", $name));
+								$name = trim(str_replace("  ", " ", $name));
 
-								/* Load the HTML from the URL */
-								$productDom->loadHTMLFile($link, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-								/* Create a new instance of the DOMXPath class */
-								$productXPath = new DOMXPath($productDom);
-
-								$nameElement = $productXPath->query("//h1[contains(@class, 'productpage_title')]")->item(0);
-								$name = $nameElement !== null ? trim($nameElement->textContent) : null;
+								$name = preg_replace("/\b" . preg_quote($manufacture, '/') . "\b/i", "", $name);
+								$name = trim(preg_replace('/\s+/', ' ', $name));
 
 								$name = strtolower($name);
+
 								$name = preg_replace_callback("/(?<=\s)\w/u", function($match)
 								{
 									return strtoupper($match[0]);
@@ -123,63 +145,14 @@
 									return strtoupper($match[0]);
 								}, $name);
 
-								$manufactureElement = $productXPath->query("//div[contains(@class, 'marque')]/span")->item(0);
-								$manufacture = $manufactureElement !== null ? trim($manufactureElement->textContent) : null;
+								$flavor = $name;
 
-								if ($manufacture == "DELICE DELI'O" || $manufacture == "DELICE")
-									$manufacture = "DÉLICE";
+								if ($flavor == "Sans Sucre" && $manufacture = "BOGA")
+									$flavor = "Lim Sans Sucre";
 
-								$priceElement = $productXPath->query("//div[contains(@class, 'current-price')]/span[@itemprop='price']")->item(0);
-								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->textContent)) : null;
+								$name = "Boisson Gazeuse";
 
-								$imageElement = $productXPath->query("//img[contains(@class, 'js-qv-product-cover')]")->item(0);
-								$image = $imageElement !== null ? trim($imageElement->getAttribute("src")) : null;
-
-								$quantityElement = $productXPath->query("//dd[contains(@class, 'value')]")->item(0);
-								$quantity = $quantityElement !== null ? trim(preg_replace("/[^0-9]/", "", $quantityElement->textContent)) : null;
-								$quantityText = $quantityElement !== null ? trim($quantityElement->textContent) : null;
-								$quantity = null;
-
-								preg_match("/\d+(\.\d+)?/", $quantityText, $matches);
-								if (!empty($matches))
-									$quantity = $matches[0];
-
-								$unit = $quantityElement !== null ? trim(preg_replace("/[^A-Z]/", "", strtoupper($quantityElement->textContent))) : null;
-								$unit = strtoupper($unit);
-
-								$flavorElement = $productXPath->query("//dd[contains(@class, 'value')]")->item(1);
-								$flavor = $flavorElement !== null ? trim($flavorElement->textContent) : null;
-								$flavor = trim(preg_replace(["/(\w+)\s*-\s*(\w+)/", "/(\w+)\s* -\s*(\w+)/", "/(\w+)\s*- \s*(\w+)/"], "$1 $2", $flavor));
-								$flavor = trim(preg_replace("/\b(?:DE|AU|D'|A'|LA|LE|ET)\b\s*/i", "", $flavor));
-								$flavor = trim(str_replace([" DE ", " AU ", " D'", " A'", " LA ", " LE ", " ET "], " ", strtoupper($flavor)));
-								$flavor = trim(str_replace([" /", "/ ", "/"], " ", $flavor));
-								$flavor = trim(str_replace("  ", " ", $flavor));
-								
-								$flavor = strtolower($flavor);
-
-								$flavorWords = explode(" ", $flavor);
-								sort($flavorWords);
-								$flavor = implode(" ", $flavorWords);
-
-								$flavor = preg_replace_callback("/(?<=\s)\w/u", function($match)
-								{
-									return strtoupper($match[0]);
-								}, $flavor);
-								$flavor = preg_replace_callback("/\b\w/u", function($match)
-								{
-									return strtoupper($match[0]);
-								}, $flavor);
-
-								$description = null;
-
-								if (strpos($name, "Minérale") !== false)
-									$description = "Mineral Water";
-								elseif (strpos($name, "Gazéifiée") !== false)
-									$description = "Sparkling Water";
-								elseif (strpos($name, "Source") !== false)
-									$description = "Spring Water";
-								else
-									$description = "Others";
+								$description = "Soda";
 
 								$product->setName($name);
 								$product->setManufacture($manufacture);
@@ -191,8 +164,8 @@
 								$product->setDescription($description);
 								$product->setLink($link);
 								$product->setCategory("beverages");
-								$product->setSubCategory("water");
-								$product->setProvider("Monoprix");
+								$product->setSubCategory("soda");
+								$product->setProvider("Carrefour");
 
 								$product->addProduct();
 							}
@@ -219,7 +192,7 @@
 			catch (Exception $e)
 			{
 				/* Encode to Json Format */
-				$response = array("success" => false, "message" => $e->getMessage());
+				$response = array("success" => false, "message" => "INVALID_TOKEN");
 				/* Return as Json Format */
 				echo json_encode($response);
 				exit;

@@ -78,7 +78,7 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Monoprix");
+					$product->disableAllProducts("Monoprix", "Juice");
 
 					do
 					{
@@ -143,6 +143,12 @@
 
 								$quantityElement = $productXPath->query("//dd[contains(@class, 'value')]")->item(0);
 								$quantity = $quantityElement !== null ? trim(preg_replace("/[^0-9]/", "", $quantityElement->textContent)) : null;
+								$quantityText = $quantityElement !== null ? trim($quantityElement->textContent) : null;
+								$quantity = null;
+
+								preg_match("/\d+(\.\d+)?/", $quantityText, $matches);
+								if (!empty($matches))
+									$quantity = $matches[0];
 
 								$unit = $quantityElement !== null ? trim(preg_replace("/[^A-Z]/", "", strtoupper($quantityElement->textContent))) : null;
 								$unit = strtoupper($unit);

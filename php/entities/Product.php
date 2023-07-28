@@ -217,20 +217,27 @@
 				$this->enableProduct();
 			}
 
-			public function disableAllProducts($provider)
+			public function disableAllProducts($provider, $sub_category)
 			{
 				$provider_id = $this->getProviderIdByName($provider);
+				$sub_category_id = $this->getSubCategoryIdByName($sub_category);
 
 				// Prepare the SQL statement to update the is_enabled flag for product providers
-				$request = "UPDATE {$this->productProviderTable} SET is_enabled = false WHERE provider_id = :provider_id;";
+				$request = "UPDATE {$this->productProviderTable} PP
+				INNER JOIN Product P
+					ON PP.product_id = P.id
+				SET PP.is_enabled = false
+				WHERE PP.provider_id = :provider_id
+					AND P.sub_category_id = :sub_category_id;";
 				// Preparing Statement
 				$statement = $this->connection->prepare($request);
 				// Binding Parameter
 				$statement->bindParam(":provider_id", $provider_id, PDO::PARAM_INT);
+				$statement->bindParam(":sub_category_id", $sub_category_id, PDO::PARAM_INT);
 				// Execute Query
-				$productProviderResult = $statement->execute();
+				$result = $statement->execute();
 
-				return $productResult && $productProviderResult;
+				return $result;
 			}
 
 			public function addProduct()

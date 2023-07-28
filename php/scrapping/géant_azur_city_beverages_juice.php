@@ -78,7 +78,7 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Géant");
+					$product->disableAllProducts("Géant", "Juice");
 
 					do
 					{

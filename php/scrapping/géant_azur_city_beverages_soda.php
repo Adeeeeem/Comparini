@@ -78,7 +78,7 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Géant");
+					$product->disableAllProducts("Géant", "Soda");
 
 					do
 					{
@@ -144,6 +144,9 @@
 								$manufactureElement = $productXPath->query("//p[@class='manufacturer_product']/a")->item(0);
 								$manufacture = $manufactureElement !== null ? trim($manufactureElement->textContent) : null;
 
+								if ($manufacture == "DELICE DELI'O" || $manufacture == "DELICE")
+									$manufacture = "DÉLICE";
+
 								$priceElement = $productXPath->query("//div[@class='current-price']/span[@itemprop='price']");
 								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->item(0)->textContent)) : null;
 
@@ -181,6 +184,9 @@
 								{
 									return strtoupper($match[0]);
 								}, $flavor);
+
+								if ($name == "Boisson Énergitique")
+									$name = "Boisson Énergétique";
 
 								$description = null;
 

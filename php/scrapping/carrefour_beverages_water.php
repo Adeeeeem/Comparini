@@ -53,7 +53,7 @@
 					/* Set the time limit to 300 seconds */
 					set_time_limit(300);
 
-					$baseURL = "https://www.carrefour.tn/default/mes-courses-alimentaires/boissons/jus.html";
+					$baseURL = "https://www.carrefour.tn/default/mes-courses-alimentaires/boissons/eaux.html";
 
 					/* Create a new instance of the DOMDocument class */
 					$dom = new DOMDocument();
@@ -78,7 +78,7 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Carrefour", "Juice");
+					$product->disableAllProducts("Carrefour");
 
 					do
 					{

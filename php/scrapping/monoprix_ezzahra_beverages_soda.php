@@ -78,7 +78,7 @@
 					$product = new Product($connection);
 
 					/* Disable all existing products and product providers */
-					$product->disableAllProducts("Monoprix");
+					$product->disableAllProducts("Monoprix", "Soda");
 
 					do
 					{
@@ -128,6 +128,9 @@
 								$manufactureElement = $productXPath->query("//div[contains(@class, 'marque')]/span")->item(0);
 								$manufacture = $manufactureElement !== null ? trim($manufactureElement->textContent) : null;
 
+								if ($manufacture == "DELICE DELI'O" || $manufacture == "DELICE")
+									$manufacture = "DÉLICE";
+
 								$priceElement = $productXPath->query("//div[contains(@class, 'current-price')]/span[@itemprop='price']")->item(0);
 								$price = $priceElement !== null ? str_replace(["DT", ","], ["", "."], trim($priceElement->textContent)) : null;
 
@@ -168,6 +171,12 @@
 								{
 									return strtoupper($match[0]);
 								}, $flavor);
+
+								if ($name == "Boissons Gazeuses")
+									$name = "Boisson Gazeuse";
+
+								if ($name == "Boisson Énergitique")
+									$name = "Boisson Énergétique";
 
 								$description = null;
 
