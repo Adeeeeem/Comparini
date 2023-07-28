@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "cc9cb41f-bdb2-4ecd-9dd3-12aab2938723",
+		"name": "Comparini",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25102340"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Monoprix",
+					"item": [
+						{
+							"name": "Ez Zahra",
+							"item": [
+								{
+									"name": "Beverages",
+									"item": [
+										{
+											"name": "Juice",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json; charset=UTF-8",
+														"type": "text"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://127.0.0.1/Comparini/php/scrapping/monoprix_ezzahra_beverages_juice.php",
+													"protocol": "http",
+													"host": [
+														"127",
+														"0",
+														"0",
+														"1"
+													],
+													"path": [
+														"Comparini",
+														"php",
+														"scrapping",
+														"monoprix_ezzahra_beverages_juice.php"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Soda",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json; charset=UTF-8",
+														"type": "text"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://127.0.0.1/Comparini/php/scrapping/monoprix_ezzahra_beverages_soda.php",
+													"protocol": "http",
+													"host": [
+														"127",
+														"0",
+														"0",
+														"1"
+													],
+													"path": [
+														"Comparini",
+														"php",
+														"scrapping",
+														"monoprix_ezzahra_beverages_soda.php"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Water",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json; charset=UTF-8",
+														"type": "text"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://127.0.0.1/Comparini/php/scrapping/monoprix_ezzahra_beverages_water.php",
+													"protocol": "http",
+													"host": [
+														"127",
+														"0",
+														"0",
+														"1"
+													],
+													"path": [
+														"Comparini",
+														"php",
+														"scrapping",
+														"monoprix_ezzahra_beverages_water.php"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Géant",
+					"item": [
+						{
+							"name": "Azur City",
+							"item": [
+								{
+									"name": "Beverages",
+									"item": [
+										{
+											"name": "Juice",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json; charset=UTF-8",
+														"type": "text"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://127.0.0.1/Comparini/php/scrapping/géant_azur_city_beverages_juice.php",
+													"protocol": "http",
+													"host": [
+														"127",
+														"0",
+														"0",
+														"1"
+													],
+													"path": [
+														"Comparini",
+														"php",
+														"scrapping",
+														"géant_azur_city_beverages_juice.php"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Soda",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json; charset=UTF-8",
+														"type": "text"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://127.0.0.1/Comparini/php/scrapping/géant_azur_city_beverages_soda.php",
+													"protocol": "http",
+													"host": [
+														"127",
+														"0",
+														"0",
+														"1"
+													],
+													"path": [
+														"Comparini",
+														"php",
+														"scrapping",
+														"géant_azur_city_beverages_soda.php"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Water",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json; charset=UTF-8",
+														"type": "text"
+													},
+													{
+														"key": "X-Requested-With",
+														"value": "XMLHttpRequest",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "http://127.0.0.1/Comparini/php/scrapping/géant_azur_city_beverages_water.php",
+													"protocol": "http",
+													"host": [
+														"127",
+														"0",
+														"0",
+														"1"
+													],
+													"path": [
+														"Comparini",
+														"php",
+														"scrapping",
+														"géant_azur_city_beverages_water.php"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Carrefour",
+					"item": [
+						{
+							"name": "Beverages",
+							"item": [
+								{
+									"name": "Juice",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json; charset=UTF-8",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1/Comparini/php/scrapping/carrefour_beverages_juice.php",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"path": [
+												"Comparini",
+												"php",
+												"scrapping",
+												"carrefour_beverages_juice.php"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Soda",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json; charset=UTF-8",
+												"type": "text"
+											},
+											{
+												"key": "X-Requested-With",
+												"value": "XMLHttpRequest",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://127.0.0.1/Comparini/php/scrapping/carrefour_beverages_soda.php",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"path": [
+												"Comparini",
+												"php",
+												"scrapping",
+												"carrefour_beverages_soda.php"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1/Comparini/php/login.php",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"Comparini",
+						"php",
+						"login.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Categories",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1/Comparini/php/get_all_categories.php",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"Comparini",
+						"php",
+						"get_all_categories.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Top Products Limited",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1/Comparini/php/get_top_products_limited.php",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"Comparini",
+						"php",
+						"get_top_products_limited.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Top Products by Category Limited",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"category_id\": \"beverages\"\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1/Comparini/php/get_top_products_by_category_limited.php",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"Comparini",
+						"php",
+						"get_top_products_by_category_limited.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Product Details",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json; charset=UTF-8",
+						"type": "text"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1/Comparini/php/product_details.php?product_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"path": [
+						"Comparini",
+						"php",
+						"product_details.php"
+					],
+					"query": [
+						{
+							"key": "product_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "{{token}}"
+		}
+	]
+}
