@@ -154,6 +154,90 @@ TRUNCATE TABLE `Product_Provider`;
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `Provider`
+--
+
+DROP TABLE IF EXISTS `Provider`;
+CREATE TABLE IF NOT EXISTS `Provider`
+(
+	`id` int(11) NOT NULL,
+	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
+	`name` varchar(255) NOT NULL,
+	`adresse` varchar(255) DEFAULT NULL,
+	`link` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Truncate table before insert `Provider`
+--
+
+TRUNCATE TABLE `Provider`;
+
+--
+-- Dumping data for table `Provider`
+--
+
+INSERT INTO `Provider` (`id`, `is_enabled`, `name`, `adresse`, `link`) VALUES
+(1, 1, 'Monoprix', 'Avenue Taieb Mhiri, Ezzahra', 'https://courses.monoprix.tn/ezzahra/'),
+(2, 1, 'Géant', 'Autoroute A1 - Km 2, Ben Arous', 'http://www.geantdrive.tn/azur-city/'),
+(3, 1, 'Carrefour', NULL, 'https://www.carrefour.tn/default/');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Sub_Category`
+--
+
+DROP TABLE IF EXISTS `Sub_Category`;
+CREATE TABLE IF NOT EXISTS `Sub_Category`
+(
+	`id` int(11) NOT NULL,
+	`is_enabled` tinyint(1) NOT NULL DEFAULT 1,
+	`label` varchar(255) NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`category_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Truncate table before insert `Sub_Category`
+--
+
+TRUNCATE TABLE `Sub_Category`;
+
+--
+-- Dumping data for table `Sub_Category`
+--
+
+INSERT INTO `sub_category` (`id`, `is_enabled`, `label`, `name`, `category_id`) VALUES
+(1, 1, 'juice', 'Juice', 1),
+(2, 1, 'soda', 'Soda', 1),
+(3, 1, 'water', 'Water', 1),
+(4, 1, 'fruits', 'Fruits', 2),
+(5, 1, 'vegetables', 'Vegetables', 2),
+(6, 1, 'nuts', 'Nuts', 2),
+(7, 1, 'poultry', 'Poultry', 3),
+(8, 1, 'beef', 'Beef', 3),
+(9, 1, 'lamb', 'Lamb', 3),
+(10, 1, 'rabbit', 'Rabbit', 3),
+(11, 1, 'deli', 'Deli', 3),
+(12, 1, 'milks', 'Milks', 4),
+(13, 1, 'yogurt', 'Yogurt', 4),
+(14, 1, 'butters', 'Butters', 4),
+(15, 1, 'cheeses', 'Cheeses', 4),
+(16, 1, 'cakes_ice_cream', 'Cakes and Ice Cream', 4),
+(17, 1, 'eggs', 'Eggs', 4),
+(18, 1, 'fish', 'Fish', 5),
+(19, 1, 'shellfish', 'Shellfish', 5),
+(20, 1, 'bread', 'Bread', 6),
+(21, 1, 'cakes', 'Cakes', 6),
+(22, 1, 'pasta', 'Pasta', 7),
+(23, 1, 'flour_semolina', 'Flour And Semolina', 7),
+(24, 1, 'couscous', 'Couscous', 7),
+(25, 1, 'rice', 'Rice', 7);
+
+-- --------------------------------------------------------
+
 
 --
 -- Indexes for dumped tables
@@ -278,7 +362,7 @@ ALTER TABLE `Product_Provider`
 --
 
 ALTER TABLE `Sub_Category`
-	ADD CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+	ADD CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `Category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 COMMIT;
 
